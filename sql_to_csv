@@ -1,0 +1,48 @@
+import mysql.connector
+import csv
+
+def mysql_to_csv(host, user, password, database, query, output_file):
+    connection = None
+    try:
+        # Connect to the MySQL database
+        connection = mysql.connector.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database
+        )
+
+        cursor = connection.cursor()
+        cursor.execute(query)
+
+        # Fetch all rows from the executed query
+        rows = cursor.fetchall()
+
+        # Get column names from the cursor
+        column_names = [i[0] for i in cursor.description]
+
+        # Write the result to a CSV file
+        with open(output_file, 'w', newline='') as csvfile:
+            csvwriter = csv.writer(csvfile)
+            csvwriter.writerow(column_names)  # Write the column names as the first row
+            csvwriter.writerows(rows)  # Write the data rows
+
+        print(f"Data successfully written to {output_file}")
+
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+
+    finally:
+        if connection is not None and connection.is_connected():
+            cursor.close()
+            connection.close()
+
+# Example usage
+host = '192.168.30.15'
+user = 'nms'
+password = 'Nms@1234'
+database = 'cnmsip'
+query = '''SELECT * from location_data'''
+output_file = 'location_data.csv'
+
+mysql_to_csv(host, user, password, database, query, output_file)
