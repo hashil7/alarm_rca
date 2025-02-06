@@ -109,7 +109,28 @@ def mark_node_down_by_ip(node_ip):
             return node
     print(f"Could not locate any node with IP {node_ip}.")
     return None
-  
+
+def get_block_from_ip(ip):
+    """
+    Fetch the block name from network_element table based on IP address.
+    Returns the block name or 'BERLA' as fallback.
+    """
+    query = """
+        SELECT locationText
+        FROM network_element
+        WHERE ip = %s
+    """
+    cursor.execute(query, (ip,))
+    result = cursor.fetchone()
+    if result and result['locationText']:
+        # Extract block name from locationText (format: "Cluster : X; District : Y;  Block : Z")
+        try:
+            block = result['locationText'].split('Block :')[1].strip()
+            return block
+        except IndexError:
+            logging.warning(f"Could not parse block from locationText for IP {ip}")
+    logging.warning(f"Using fallback block 'BERLA' for IP {ip}")
+    return 'BERLA'    
 
 while True:
     query = "SELECT * FROM alarm WHERE NE_TIME > %s ORDER BY NE_TIME"
@@ -144,8 +165,8 @@ while True:
               alarm_ids_causing_down.append(alarm_id)
                 # Mark the node down in the global physical graph via its IP.
               mark_node_down_by_ip(node_ip)
+              start_node = get_block_from_ip(node_ip)
             # After processing these alarms, check for new isolated nodes.
-            start_node = 'BERLA'  # adjust as needed
             if start_node in persistent_physical_graph.nodes:
                 reachable = set(nx.single_source_shortest_path_length(persistent_physical_graph, start_node).keys())
                 current_isolated_nodes = set(persistent_physical_graph.nodes()) - reachable
@@ -189,7 +210,7 @@ while True:
                 cursor.execute(query_conn, (ip1, ifIndex1, ip2, ifIndex2, ip2, ifIndex2, ip1, ifIndex1))
                 result_conn = cursor.fetchall()
                 
-                connection_name, lr_ring, district, block, curr_physicalring, physicalsegments = get_connection_info(result_conn)
+                connection_name, lr_ring, block,district, curr_physicalring, physicalsegments = get_connection_info(result_conn)
                 if connection_name:
                     log_message = (
                       f"Due to the below alarms a logical cut has happened:\n"
@@ -214,7 +235,7 @@ while True:
                         print(f"Edge {aend}-{bend} not found in global physical graph.")
 
                     # Check for isolated nodes from a chosen start node (e.g. 'BERLA')
-                    start_node = 'BERLA'
+                    start_node = block
                     if start_node in persistent_physical_graph.nodes:
                         reachable = set(nx.single_source_shortest_path_length(persistent_physical_graph, start_node).keys())
                         current_isolated_nodes = set(persistent_physical_graph.nodes()) - reachable
