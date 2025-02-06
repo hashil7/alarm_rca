@@ -1,0 +1,58 @@
+2025-02-06 16:16:58,032 INFO: Processing NE_TIME group: 2025-02-06 09:54:32
+2025-02-06 16:16:58,051 INFO: Due to the below alarms a logical cut has happened:
+   Alarm IDs: LIN_20250206095431_588606ce186b and LIN_20250206095431_895f0e75a25b
+   Endpoints: 10.128.17.53:13 <--> 10.128.17.31:14
+   Connection Name: GADAMOR-KOHDIYA
+   LR Ring: Ring no.01
+   Physical Ring: BERLA_Blue
+   Physical Segments: 114
+   Block: BEMETARA
+   District: BERLA
+----------------------------------------
+2025-02-06 16:16:58,058 INFO: No isolated nodes after the cut.
+2025-02-06 16:16:58,069 INFO: The logical cuts does not cover all logical rings...cannot be a physical cut
+2025-02-06 16:16:58,071 INFO: Processing NE_TIME group: 2025-02-06 12:24:15
+2025-02-06 16:16:58,102 INFO: Due to the below alarms a logical cut has happened:
+   Alarm IDs: LIN_20250206122414_94dc28d82449 and LIN_20250206122415_ed8f5cb43587
+   Endpoints: 10.128.17.88:14 <--> 10.128.0.16:13
+   Connection Name: KUMHI-BERLA
+   LR Ring: Ring no.01
+   Physical Ring: BERLA_Blue
+   Physical Segments: 127,128,129,130
+   Block: Bemetara
+   District: Berla
+----------------------------------------
+2025-02-06 16:16:58,109 INFO: Isolated nodes after logical cut: {'KUMHI', 'KOHDIYA', 'BERLAKALA', 'GUDHELI', 'DHABA'}
+Root Cause alarms: LIN_20250206122414_94dc28d82449 and LIN_20250206122415_ed8f5cb43587
+2025-02-06 16:16:58,130 INFO: Due to the below alarms a logical cut has happened:
+   Alarm IDs: LIN_20250206122415_0b598a50c76f and LIN_20250206122415_cddd9041a3a6
+   Endpoints: 10.128.17.13:14 <--> 10.128.17.46:13
+   Connection Name: BHARDA-KHARRA
+   LR Ring: Ring no.02
+   Physical Ring: BERLA_Blue
+   Physical Segments: 124,125,126,127
+   Block: BEMETARA
+   District: BERLA
+----------------------------------------
+2025-02-06 16:16:58,136 INFO: No isolated nodes after the cut.
+2025-02-06 16:16:58,149 INFO: Due to the below alarms a logical cut has happened:
+   Alarm IDs: LIN_20250206122415_7d34ee833f16 and LIN_20250206122415_c2a2537b89cd
+   Endpoints: 10.128.17.7:14 <--> 10.128.17.11:13
+   Connection Name: BARGAON-BHAND
+   LR Ring: Ring no.03
+   Physical Ring: BERLA_Blue
+   Physical Segments: 126,127,128,129
+   Block: BEMETARA
+   District: BERLA
+----------------------------------------
+2025-02-06 16:16:58,155 INFO: No isolated nodes after the cut.
+2025-02-06 16:16:58,199 INFO: All logical cuts cover all logical rings in the physical ring...Might be a physical cut
+2025-02-06 16:16:58,207 INFO: All the above alarms at 2025-02-06 12:24:15 have occurred due to an OFC.
+Connection: KUMHI-KHARRA in Physical Ring: BERLA_Blue
+2025-02-06 16:16:58,210 INFO: Processing NE_TIME group: 2025-02-06 15:55:19
+2025-02-06 16:16:58,213 INFO: {'ID': 'DUMMY_20accc5c-ea48-41f1-8501-364d03d9ab80', 'NOTIF_ID': 'DUMMY_20accc5c-ea48-41f1-8501-364d03d9ab80', 'NE_TIME': datetime.datetime(2025, 2, 6, 15, 55, 19), 'OBJ_NAME': '10.128.17.73', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.73', 'EMS_TIME': datetime.datetime(2025, 2, 6, 15, 55, 19), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 6, 15, 55, 19), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
+2025-02-06 16:16:58,218 INFO: 
+[ALARM ALERT] New isolated nodes detected due to node_not_reachable alarms:
+    Root Cause Alarm IDs : DUMMY_20accc5c-ea48-41f1-8501-364d03d9ab80
+    Isolated Nodes       : LAWATARA, MUDPAR KALAN, BARGAON
+---------------------------------------------------------------------
