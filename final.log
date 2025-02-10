@@ -1,58 +1,228 @@
-2025-02-06 16:16:58,032 INFO: Processing NE_TIME group: 2025-02-06 09:54:32
-2025-02-06 16:16:58,051 INFO: Due to the below alarms a logical cut has happened:
-   Alarm IDs: LIN_20250206095431_588606ce186b and LIN_20250206095431_895f0e75a25b
+2025-02-10 10:09:53,409 INFO: Processing NE_TIME group: 2025-02-10 09:39:04
+2025-02-10 10:09:53,431 INFO: Due to the below alarms a logical cut has happened:
+   Alarm IDs: LIN_20250210093904_199e250690c4 and LIN_20250210093904_1f3d6f09bae8
    Endpoints: 10.128.17.53:13 <--> 10.128.17.31:14
    Connection Name: GADAMOR-KOHDIYA
    LR Ring: Ring no.01
    Physical Ring: BERLA_Blue
    Physical Segments: 114
-   Block: BEMETARA
-   District: BERLA
+   Block: BERLA
+   District: BEMETARA
 ----------------------------------------
-2025-02-06 16:16:58,058 INFO: No isolated nodes after the cut.
-2025-02-06 16:16:58,069 INFO: The logical cuts does not cover all logical rings...cannot be a physical cut
-2025-02-06 16:16:58,071 INFO: Processing NE_TIME group: 2025-02-06 12:24:15
-2025-02-06 16:16:58,102 INFO: Due to the below alarms a logical cut has happened:
-   Alarm IDs: LIN_20250206122414_94dc28d82449 and LIN_20250206122415_ed8f5cb43587
+2025-02-10 10:09:53,447 INFO: No isolated nodes after the cut.
+2025-02-10 10:09:53,497 INFO: The logical cuts does not cover all logical rings...cannot be a physical cut
+2025-02-10 10:09:53,500 INFO: Processing NE_TIME group: 2025-02-10 09:54:45
+2025-02-10 10:09:53,520 INFO: Due to the below alarms a logical cut has happened:
+   Alarm IDs: LIN_20250210095444_59b3668b8965 and LIN_20250210095445_80372af1251e
    Endpoints: 10.128.17.88:14 <--> 10.128.0.16:13
    Connection Name: KUMHI-BERLA
    LR Ring: Ring no.01
    Physical Ring: BERLA_Blue
    Physical Segments: 127,128,129,130
-   Block: Bemetara
-   District: Berla
+   Block: Berla
+   District: Bemetara
 ----------------------------------------
-2025-02-06 16:16:58,109 INFO: Isolated nodes after logical cut: {'KUMHI', 'KOHDIYA', 'BERLAKALA', 'GUDHELI', 'DHABA'}
-Root Cause alarms: LIN_20250206122414_94dc28d82449 and LIN_20250206122415_ed8f5cb43587
-2025-02-06 16:16:58,130 INFO: Due to the below alarms a logical cut has happened:
-   Alarm IDs: LIN_20250206122415_0b598a50c76f and LIN_20250206122415_cddd9041a3a6
-   Endpoints: 10.128.17.13:14 <--> 10.128.17.46:13
-   Connection Name: BHARDA-KHARRA
-   LR Ring: Ring no.02
-   Physical Ring: BERLA_Blue
-   Physical Segments: 124,125,126,127
-   Block: BEMETARA
-   District: BERLA
-----------------------------------------
-2025-02-06 16:16:58,136 INFO: No isolated nodes after the cut.
-2025-02-06 16:16:58,149 INFO: Due to the below alarms a logical cut has happened:
-   Alarm IDs: LIN_20250206122415_7d34ee833f16 and LIN_20250206122415_c2a2537b89cd
-   Endpoints: 10.128.17.7:14 <--> 10.128.17.11:13
-   Connection Name: BARGAON-BHAND
-   LR Ring: Ring no.03
-   Physical Ring: BERLA_Blue
-   Physical Segments: 126,127,128,129
-   Block: BEMETARA
-   District: BERLA
-----------------------------------------
-2025-02-06 16:16:58,155 INFO: No isolated nodes after the cut.
-2025-02-06 16:16:58,199 INFO: All logical cuts cover all logical rings in the physical ring...Might be a physical cut
-2025-02-06 16:16:58,207 INFO: All the above alarms at 2025-02-06 12:24:15 have occurred due to an OFC.
-Connection: KUMHI-KHARRA in Physical Ring: BERLA_Blue
-2025-02-06 16:16:58,210 INFO: Processing NE_TIME group: 2025-02-06 15:55:19
-2025-02-06 16:16:58,213 INFO: {'ID': 'DUMMY_20accc5c-ea48-41f1-8501-364d03d9ab80', 'NOTIF_ID': 'DUMMY_20accc5c-ea48-41f1-8501-364d03d9ab80', 'NE_TIME': datetime.datetime(2025, 2, 6, 15, 55, 19), 'OBJ_NAME': '10.128.17.73', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.73', 'EMS_TIME': datetime.datetime(2025, 2, 6, 15, 55, 19), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 6, 15, 55, 19), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
-2025-02-06 16:16:58,218 INFO: 
+2025-02-10 10:09:53,742 INFO: Isolated nodes after logical cut: {'DHABA', 'GUDHELI', 'KUMHI', 'BERLAKALA', 'KOHDIYA'}
+Root Cause alarms: LIN_20250210095444_59b3668b8965 and LIN_20250210095445_80372af1251e
+Child alarm IDs: DUMMY_ac4cd2c6-9cd5-47e4-ac5a-4fea7a564fd4, DUMMY_2ef0a1c4-54e0-434e-a5de-2e4bb62a2185, DUMMY_47ff151b-624a-4e87-876e-9ee14c0023b7, DUMMY_0d4b5af7-6699-40cd-b731-d2ece2f0f20f, DUMMY_dab7e47f-6185-49c8-95f4-8bdd268ee03e
+2025-02-10 10:09:53,804 INFO: The logical cuts does not cover all logical rings...cannot be a physical cut
+2025-02-10 10:09:53,807 INFO: Processing NE_TIME group: 2025-02-10 09:55:02
+2025-02-10 10:09:53,811 INFO: {'ID': 'DUMMY_2160d2d0-6650-4fe1-9ef2-f85749e3be5f', 'NOTIF_ID': 'DUMMY_2160d2d0-6650-4fe1-9ef2-f85749e3be5f', 'NE_TIME': datetime.datetime(2025, 2, 10, 9, 55, 2), 'OBJ_NAME': '10.128.17.9', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.9', 'EMS_TIME': datetime.datetime(2025, 2, 10, 9, 55, 2), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 10, 9, 55, 2), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
+2025-02-10 10:09:53,825 INFO: {'ID': 'DUMMY_7bcc865b-a5ae-4bfb-b08f-31b322b1c005', 'NOTIF_ID': 'DUMMY_7bcc865b-a5ae-4bfb-b08f-31b322b1c005', 'NE_TIME': datetime.datetime(2025, 2, 10, 9, 55, 2), 'OBJ_NAME': '10.128.17.53', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.53', 'EMS_TIME': datetime.datetime(2025, 2, 10, 9, 55, 2), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 10, 9, 55, 2), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
+2025-02-10 10:09:53,839 INFO: {'ID': 'DUMMY_7e48dfa0-4ec5-4013-8f14-730246b697af', 'NOTIF_ID': 'DUMMY_7e48dfa0-4ec5-4013-8f14-730246b697af', 'NE_TIME': datetime.datetime(2025, 2, 10, 9, 55, 2), 'OBJ_NAME': '10.128.17.29', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.29', 'EMS_TIME': datetime.datetime(2025, 2, 10, 9, 55, 2), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 10, 9, 55, 2), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
+2025-02-10 10:09:53,905 INFO: {'ID': 'DUMMY_9dafe72b-2466-4403-8511-dae41dfca9f1', 'NOTIF_ID': 'DUMMY_9dafe72b-2466-4403-8511-dae41dfca9f1', 'NE_TIME': datetime.datetime(2025, 2, 10, 9, 55, 2), 'OBJ_NAME': '10.128.17.88', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.88', 'EMS_TIME': datetime.datetime(2025, 2, 10, 9, 55, 2), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 10, 9, 55, 2), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
+2025-02-10 10:09:53,917 INFO: {'ID': 'DUMMY_fb520e4f-7fc3-4dcc-a44c-06711558117c', 'NOTIF_ID': 'DUMMY_fb520e4f-7fc3-4dcc-a44c-06711558117c', 'NE_TIME': datetime.datetime(2025, 2, 10, 9, 55, 2), 'OBJ_NAME': '10.128.17.35', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.35', 'EMS_TIME': datetime.datetime(2025, 2, 10, 9, 55, 2), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 10, 9, 55, 2), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
+2025-02-10 10:09:54,004 INFO: 
+2025-02-10 10:09:54,047 INFO: 
+2025-02-10 10:09:54,113 INFO: 
+2025-02-10 10:09:54,125 INFO: 
+2025-02-10 10:09:54,138 INFO: 
+2025-02-10 10:09:54,150 INFO: 
+2025-02-10 10:09:54,216 INFO: 
+2025-02-10 10:09:54,231 INFO: 
+2025-02-10 10:09:54,243 INFO: 
+2025-02-10 10:09:54,311 INFO: 
+2025-02-10 10:09:54,324 INFO: 
+2025-02-10 10:09:54,336 INFO: 
+2025-02-10 10:09:54,349 INFO: 
+2025-02-10 10:09:54,423 INFO: 
+2025-02-10 10:09:54,438 INFO: 
+2025-02-10 10:09:54,449 INFO: 
+2025-02-10 10:09:54,516 INFO: 
+2025-02-10 10:09:54,528 INFO: 
+2025-02-10 10:09:54,543 INFO: 
+2025-02-10 10:09:54,556 INFO: 
+2025-02-10 10:09:54,625 INFO: 
+2025-02-10 10:09:54,637 INFO: 
+2025-02-10 10:09:54,652 INFO: 
+2025-02-10 10:09:54,721 INFO: 
+2025-02-10 10:09:54,737 INFO: 
+2025-02-10 10:09:54,762 INFO: 
+2025-02-10 10:09:54,831 INFO: 
+2025-02-10 10:09:54,844 INFO: 
+2025-02-10 10:09:54,858 INFO: 
+2025-02-10 10:09:54,943 INFO: 
+2025-02-10 10:09:55,040 INFO: 
+2025-02-10 10:09:55,053 INFO: 
+2025-02-10 10:09:55,068 INFO: 
+2025-02-10 10:09:55,139 INFO: 
+2025-02-10 10:09:55,153 INFO: 
+2025-02-10 10:09:55,168 INFO: 
+2025-02-10 10:09:55,237 INFO: 
+2025-02-10 10:09:55,255 INFO: 
+2025-02-10 10:09:55,269 INFO: 
+2025-02-10 10:09:55,342 INFO: 
+2025-02-10 10:09:55,353 INFO: 
+2025-02-10 10:09:55,367 INFO: 
+2025-02-10 10:09:55,380 INFO: 
+2025-02-10 10:09:55,444 INFO: 
+2025-02-10 10:09:55,459 INFO: 
+2025-02-10 10:09:55,541 INFO: 
+2025-02-10 10:09:55,555 INFO: 
+2025-02-10 10:09:55,569 INFO: 
+2025-02-10 10:09:55,582 INFO: 
+2025-02-10 10:09:55,654 INFO: 
+2025-02-10 10:09:55,667 INFO: 
+2025-02-10 10:09:55,684 INFO: 
+2025-02-10 10:09:55,758 INFO: 
+2025-02-10 10:09:55,771 INFO: 
+2025-02-10 10:09:55,786 INFO: 
+2025-02-10 10:09:55,864 INFO: 
+2025-02-10 10:09:55,875 INFO: 
+2025-02-10 10:09:55,890 INFO: 
+2025-02-10 10:09:55,958 INFO: 
+2025-02-10 10:09:55,972 INFO: 
+2025-02-10 10:09:55,989 INFO: 
+2025-02-10 10:09:56,060 INFO: 
+2025-02-10 10:09:56,076 INFO: 
+2025-02-10 10:09:56,088 INFO: 
+2025-02-10 10:09:56,154 INFO: 
+2025-02-10 10:09:56,165 INFO: 
+2025-02-10 10:09:56,178 INFO: 
+2025-02-10 10:09:56,194 INFO: 
+2025-02-10 10:09:56,263 INFO: 
+2025-02-10 10:09:56,275 INFO: 
+2025-02-10 10:09:56,286 INFO: 
+2025-02-10 10:09:56,298 INFO: 
+2025-02-10 10:09:56,370 INFO: 
+2025-02-10 10:09:56,382 INFO: 
+2025-02-10 10:09:56,399 INFO: 
+2025-02-10 10:09:56,469 INFO: 
+2025-02-10 10:09:56,486 INFO: 
+2025-02-10 10:09:56,501 INFO: 
+2025-02-10 10:09:56,503 INFO: 
 [ALARM ALERT] New isolated nodes detected due to node_not_reachable alarms:
-    Root Cause Alarm IDs : DUMMY_20accc5c-ea48-41f1-8501-364d03d9ab80
-    Isolated Nodes       : LAWATARA, MUDPAR KALAN, BARGAON
+    Root Cause Alarm IDs : DUMMY_2160d2d0-6650-4fe1-9ef2-f85749e3be5f, DUMMY_7bcc865b-a5ae-4bfb-b08f-31b322b1c005, DUMMY_7e48dfa0-4ec5-4013-8f14-730246b697af, DUMMY_9dafe72b-2466-4403-8511-dae41dfca9f1, DUMMY_fb520e4f-7fc3-4dcc-a44c-06711558117c
+    Isolated Nodes       : GHATIYAKALA, BHARDA, SIVAR, BARGAON, HATPAN, BANSA, HASADA, PATORA, SINGDEHI, KESHDABARI, KATHIYA, AKOLI, RANKA, GHOTMARRA, KHISORA, UFARA, TELGA, SURHOLI, REVE, NEVNARA, BHARCHATTI, DEVRI, BHAND, SOTH, PAHANDA, BHILOURI, LAVATARA, KODAVA, ATARGADI, KIRITPUR, KUMHIGUDA, LAWATARA, TILAI, SARDA, TAKSIVA, CHONGIKHAPARI, SANKARA, KURUD, SINGHOURI, LENGVARA, BAWANLAKH, DANGANIYA KH, GODGIRI, KHURMUDA, BERLA, TAKAM, BEHARGHAT, BAHERA, SANDI, BAHINGA, JAMGHAT, KANDARKA, SALDHA, BHATGAON, TARALIM, KHARRA, BORSI, SURUJPURA, BHALESHAR, ANANDGAON, MOHABHATTA, KHAMHARIYA, MANIYARI, HARDI, SILGHATT, DEVARBIJA, GADAMOR, BORIYA, KUSMI, DEVADA, BHEDANI, MUDPAR KALAN, DANGANIYA B, RAVELI, PIRDA, CHETUVA, PARPODA, JAMGAON
+    Child Alarm IDs      : DUMMY_667ef9e7-186f-4eba-a873-2aca36c41962, DUMMY_fc5c9a23-21a2-4de4-b95e-f288097af559, DUMMY_6874b9d6-42f9-4ffa-8cbf-3fa5b1689fc0, DUMMY_ecd703b6-29d4-43d2-a674-9ba1ec9bce46, DUMMY_ea52c70c-1faa-46f1-8d2b-fa8caf09e9a0, DUMMY_8bdc2648-6b32-4d59-8f3a-34a4073cc2a1, DUMMY_8081b1e5-b200-4451-9132-4790baa7d5f7, DUMMY_a8d87708-029e-4657-bce1-fc179c080bce, DUMMY_0f921387-0b55-4ab5-ac82-158d732e448b, DUMMY_33f8f0fd-b67a-43b6-a14b-37a62b1d85cb, DUMMY_6430c665-9a39-437f-8583-9fe5f0916950, DUMMY_9595a0ca-c0bc-44ef-9fa6-f0be7a85c2fd, DUMMY_c82c24c4-cc0d-4ac2-8bd7-efd646ddab1f, DUMMY_413eb9bf-7c02-4761-843b-4c917ac7fe26, DUMMY_7be7fdac-4073-4d84-8f0a-e07a663c2056, DUMMY_d81be512-1298-4f85-8b52-31e0ff2427be, DUMMY_da706930-d165-4eb3-bb13-053b22fba3c4, DUMMY_d5f0ce4c-3b51-4f93-86d7-acbd81d91d52, DUMMY_dccf8a72-a646-4f3e-a933-80107c9d0c3e, DUMMY_4d214d7e-6def-42dc-82f9-4c49882829bd, DUMMY_7f64064b-f704-478c-8901-a73f150f4f0c, DUMMY_5764d75a-ad8d-405e-88fd-f340fafe73eb, DUMMY_80972a14-3dd7-4011-8e5d-b0cef665b76d, DUMMY_2135402c-e169-444b-8053-c5191954d885, DUMMY_9a862826-6a1c-4702-91f2-ec41a59137fd, DUMMY_728f8ea6-821d-4da7-a9b8-92073e734035, DUMMY_7f3da938-6e2c-437c-8cdf-d041ce9f6ad0, DUMMY_9098c0eb-6a68-4cc4-b74b-641c3a0497a6, DUMMY_649b03bf-4889-4755-8882-9d43944364e1, DUMMY_6335e2f8-9aa0-4aa5-bbe3-9788cf08c0dd, DUMMY_3133e3ad-80c4-4612-8429-719890dd6ea4, DUMMY_967127fd-4e49-4569-b1ca-50460e2569ff, DUMMY_30be5b1e-0a5b-4fdb-87ae-5b430fa77ba8, DUMMY_6f37177a-0d6a-4fe9-b9cd-acc8816e6547, DUMMY_860fbf76-a0ea-4873-8787-4d55503944d3, DUMMY_bcc3fea5-6155-488a-ab57-67a29c808841, DUMMY_8fd72726-7ad6-4eb0-84eb-c2d0a38c71d5, DUMMY_f682ad83-2f5c-47c2-9d03-fefc0dba4c71, DUMMY_3817bbcf-6cd5-49ad-880c-e1a3a04867d8, DUMMY_655041ad-dfb5-45d2-92ed-65a7d00e2191, DUMMY_523875c9-9b42-4cd1-8c3b-a2a7e60b7752, DUMMY_945dc709-cbee-4f80-83c8-e32b056f051a, DUMMY_1cc65972-866d-4b58-82f9-00001e6aee1d, DUMMY_113e1f99-5071-49f5-aad2-e7798fddfe47, DUMMY_1fcce230-f8a7-48c5-abde-3b9a987673b4, DUMMY_27a656ca-a75a-461e-a6fa-db5e5802c8c8, DUMMY_4d4f7ec4-058a-44e3-986d-0c648b4265e0, DUMMY_d22ff5b8-a5fb-48ba-9ead-e9de8a2b7095, DUMMY_5e604f8c-b0c9-4856-9334-2ead401676dc, DUMMY_ed67336c-9342-4245-99a6-d506dea5de89, DUMMY_d52a588d-16d4-4606-a5e9-bb521fa1333e, DUMMY_ef924039-fefb-476f-9583-bb283a32eb90, DUMMY_0c436e4e-5ad0-4d37-babc-d464d447d011, DUMMY_61fd6156-9d94-47e3-844b-cfd6cfef7062, DUMMY_c9703b40-81c3-482e-8e6e-b281f979e6dc, DUMMY_42f79daf-ff63-4594-ac44-f9293959e2b6, DUMMY_516d79b1-244b-457b-a434-60dd01ab2470, DUMMY_0beae8ab-51a8-4707-8f60-5ac62ef6eff1, DUMMY_9de330e5-de5f-4cf5-9a0c-5f2c2081302a, DUMMY_f59a7ddc-e78b-4588-a073-83ef951dfe82, DUMMY_c0adf0d1-95be-478f-87af-8211229f1ca0, DUMMY_b99f5a65-a913-4e09-b7e3-325cb4f9fff4, DUMMY_14f2b98a-2a91-47ae-a09e-7e7593b7f817, DUMMY_2291d7d3-ef3c-4835-946d-34f4d113c6e2, DUMMY_1c483e6c-e45f-4c45-8fd4-de538d7b2c7b, DUMMY_74ae451a-0c73-43be-a633-da5f7ecab451, DUMMY_a55aef9a-a236-4e72-aced-b8c93418d19c, DUMMY_4feb14f0-ae51-489a-a34a-eceb35293075, DUMMY_c9a590b9-6606-40a8-b0d5-3657f04c2a61, DUMMY_5226f672-6f40-42eb-8eac-0022ffcfb9a1, DUMMY_68fa9b7c-921f-4e84-b98e-c471ae618f1f, DUMMY_bddbdec8-4e4e-4b39-bcb7-a35d077e0019, DUMMY_905f5f64-dff5-4982-a241-d61a1e2e33e6, DUMMY_6caa8a82-6e58-47de-b413-3a70893afe2b, DUMMY_5010fc21-c8ee-4401-a86e-5f28e6748b9b, DUMMY_049080b7-0ff6-4e50-9476-b525ee651901, DUMMY_602c5df6-38aa-43a5-a79c-c8ff4314f116, DUMMY_a3bff148-f671-458a-b2ed-179f14669310
 ---------------------------------------------------------------------
+2025-02-10 10:14:08,812 INFO: Processing NE_TIME group: 2025-02-10 09:39:04
+2025-02-10 10:14:08,876 INFO: Due to the below alarms a logical cut has happened:
+   Alarm IDs: LIN_20250210093904_199e250690c4 and LIN_20250210093904_1f3d6f09bae8
+   Endpoints: 10.128.17.53:13 <--> 10.128.17.31:14
+   Connection Name: GADAMOR-KOHDIYA
+   LR Ring: Ring no.01
+   Physical Ring: BERLA_Blue
+   Physical Segments: 114
+   Block: BERLA
+   District: BEMETARA
+----------------------------------------
+2025-02-10 10:14:08,896 INFO: No isolated nodes after the cut.
+2025-02-10 10:14:08,910 INFO: The logical cuts does not cover all logical rings...cannot be a physical cut
+2025-02-10 10:14:08,914 INFO: Processing NE_TIME group: 2025-02-10 09:54:45
+2025-02-10 10:14:08,982 INFO: Due to the below alarms a logical cut has happened:
+   Alarm IDs: LIN_20250210095444_59b3668b8965 and LIN_20250210095445_80372af1251e
+   Endpoints: 10.128.17.88:14 <--> 10.128.0.16:13
+   Connection Name: KUMHI-BERLA
+   LR Ring: Ring no.01
+   Physical Ring: BERLA_Blue
+   Physical Segments: 127,128,129,130
+   Block: Berla
+   District: Bemetara
+----------------------------------------
+2025-02-10 10:14:09,187 INFO: Isolated nodes after logical cut: {'DHABA', 'BERLAKALA', 'KUMHI', 'GUDHELI', 'KOHDIYA'}
+Root Cause alarms: LIN_20250210095444_59b3668b8965 and LIN_20250210095445_80372af1251e
+Child alarm IDs: DUMMY_468d1328-b3c4-4060-9e9c-c782f220c165, DUMMY_5b30ccc6-ba01-4fdf-b355-571499b88342, DUMMY_86abfad0-455a-49f9-8f2f-4149573a023f, DUMMY_e9c74a1b-b311-4b13-b2ed-5d91e4d300db, DUMMY_abcd8744-adf7-4907-893f-d22ed651f1e1
+2025-02-10 10:14:09,204 INFO: The logical cuts does not cover all logical rings...cannot be a physical cut
+2025-02-10 10:27:47,990 INFO: Processing NE_TIME group: 2025-02-10 09:39:04
+2025-02-10 10:27:48,011 INFO: Due to the below alarms a logical cut has happened:
+   Alarm IDs: LIN_20250210093904_199e250690c4 and LIN_20250210093904_1f3d6f09bae8
+   Endpoints: 10.128.17.53:13 <--> 10.128.17.31:14
+   Connection Name: GADAMOR-KOHDIYA
+   LR Ring: Ring no.01
+   Physical Ring: BERLA_Blue
+   Physical Segments: 114
+   Block: BERLA
+   District: BEMETARA
+----------------------------------------
+2025-02-10 10:27:48,027 INFO: No isolated nodes after the cut.
+2025-02-10 10:27:48,087 INFO: The logical cuts does not cover all logical rings...cannot be a physical cut
+2025-02-10 10:27:48,089 INFO: Processing NE_TIME group: 2025-02-10 09:54:45
+2025-02-10 10:27:48,101 INFO: Due to the below alarms a logical cut has happened:
+   Alarm IDs: LIN_20250210095444_59b3668b8965 and LIN_20250210095445_80372af1251e
+   Endpoints: 10.128.17.88:14 <--> 10.128.0.16:13
+   Connection Name: KUMHI-BERLA
+   LR Ring: Ring no.01
+   Physical Ring: BERLA_Blue
+   Physical Segments: 127,128,129,130
+   Block: Berla
+   District: Bemetara
+----------------------------------------
+2025-02-10 10:27:48,292 INFO: Isolated nodes after logical cut: {'KUMHI', 'DHABA', 'GUDHELI', 'KOHDIYA', 'BERLAKALA'}
+Root Cause alarms: LIN_20250210095444_59b3668b8965 and LIN_20250210095445_80372af1251e
+Child alarm IDs: DUMMY_5dbada7d-34f1-4a63-a135-109c0c3145a1, DUMMY_fe165912-1ff9-4e71-9d63-8e58f43fee2b, DUMMY_b18744e5-e868-49c4-8f37-d210db6e744a, DUMMY_f84c0295-a719-439e-b1dc-d3768083de24, DUMMY_e0ca9122-0f1a-475b-b484-23928a42c5e8
+2025-02-10 10:27:48,311 INFO: The logical cuts does not cover all logical rings...cannot be a physical cut
+2025-02-10 13:55:09,379 INFO: Processing NE_TIME group: 2025-02-10 09:39:04
+2025-02-10 13:55:09,407 INFO: Due to the below alarms a logical cut has happened:
+   Alarm IDs: LIN_20250210093904_199e250690c4 and LIN_20250210093904_1f3d6f09bae8
+   Endpoints: 10.128.17.53:13 <--> 10.128.17.31:14
+   Connection Name: GADAMOR-KOHDIYA
+   LR Ring: Ring no.01
+   Physical Ring: BERLA_Blue
+   Physical Segments: 114
+   Block: BERLA
+   District: BEMETARA
+----------------------------------------
+2025-02-10 13:55:09,424 INFO: No isolated nodes after the cut.
+2025-02-10 13:55:09,441 INFO: The logical cuts does not cover all logical rings...cannot be a physical cut
+2025-02-10 13:55:09,445 INFO: Processing NE_TIME group: 2025-02-10 10:27:48
+2025-02-10 13:55:09,449 INFO: {'ID': 'DUMMY_b18744e5-e868-49c4-8f37-d210db6e744a', 'NOTIF_ID': 'DUMMY_b18744e5-e868-49c4-8f37-d210db6e744a', 'NE_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'OBJ_NAME': '10.128.17.35', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.35', 'EMS_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
+2025-02-10 13:55:09,466 INFO: {'ID': 'DUMMY_e0ca9122-0f1a-475b-b484-23928a42c5e8', 'NOTIF_ID': 'DUMMY_e0ca9122-0f1a-475b-b484-23928a42c5e8', 'NE_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'OBJ_NAME': '10.128.17.9', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.9', 'EMS_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
+2025-02-10 13:55:09,484 INFO: {'ID': 'DUMMY_f84c0295-a719-439e-b1dc-d3768083de24', 'NOTIF_ID': 'DUMMY_f84c0295-a719-439e-b1dc-d3768083de24', 'NE_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'OBJ_NAME': '10.128.17.53', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.53', 'EMS_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
+2025-02-10 13:55:09,502 INFO: No new isolated nodes detected after node_not_reachable alarms ['DUMMY_b18744e5-e868-49c4-8f37-d210db6e744a', 'DUMMY_e0ca9122-0f1a-475b-b484-23928a42c5e8', 'DUMMY_f84c0295-a719-439e-b1dc-d3768083de24'].
+2025-02-10 14:06:35,416 INFO: Processing fixed alarms NE_TIME group: 2025-02-10 09:54:45
+2025-02-10 14:06:35,482 INFO: Fixed link_down detected:
+   Alarm IDs: LIN_20250210095444_59b3668b8965 and LIN_20250210095445_80372af1251e
+   Endpoints: 10.128.17.88:14 <--> 10.128.0.16:13
+   Connection Name: KUMHI-BERLA
+   LR Ring: Ring no.01
+   Physical Ring: BERLA_Blue
+   Physical Segments: 127,128,129,130
+   Block: Berla
+   District: Bemetara
+----------------------------------------
+2025-02-10 14:06:35,494 INFO: Processing fixed alarms NE_TIME group: 2025-02-10 10:27:48
+2025-02-10 14:06:35,527 INFO: Fixed node_not_reachable alarm for node 10.128.17.88 (Alarm ID: DUMMY_5dbada7d-34f1-4a63-a135-109c0c3145a1)
+2025-02-10 14:06:35,529 INFO: Fixed node_not_reachable alarm for node 10.128.17.29 (Alarm ID: DUMMY_fe165912-1ff9-4e71-9d63-8e58f43fee2b)
+2025-02-10 14:06:35,532 INFO: 
+[FIXED ALARM] Node not reachable alarms cleared:
+    Alarm IDs : DUMMY_5dbada7d-34f1-4a63-a135-109c0c3145a1, DUMMY_fe165912-1ff9-4e71-9d63-8e58f43fee2b
+---------------------------------------------------------------------
+2025-02-10 14:06:35,599 INFO: Processing NE_TIME group: 2025-02-10 09:39:04
+2025-02-10 14:06:35,616 INFO: Due to the below alarms a logical cut has happened:
+   Alarm IDs: LIN_20250210093904_199e250690c4 and LIN_20250210093904_1f3d6f09bae8
+   Endpoints: 10.128.17.53:13 <--> 10.128.17.31:14
+   Connection Name: GADAMOR-KOHDIYA
+   LR Ring: Ring no.01
+   Physical Ring: BERLA_Blue
+   Physical Segments: 114
+   Block: BERLA
+   District: BEMETARA
+----------------------------------------
+2025-02-10 14:06:35,625 INFO: No isolated nodes after the cut.
+2025-02-10 14:06:35,690 INFO: The logical cuts does not cover all logical rings...cannot be a physical cut
+2025-02-10 14:06:35,692 INFO: Processing NE_TIME group: 2025-02-10 10:27:48
+2025-02-10 14:06:35,694 INFO: {'ID': 'DUMMY_b18744e5-e868-49c4-8f37-d210db6e744a', 'NOTIF_ID': 'DUMMY_b18744e5-e868-49c4-8f37-d210db6e744a', 'NE_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'OBJ_NAME': '10.128.17.35', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.35', 'EMS_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
+2025-02-10 14:06:35,721 INFO: {'ID': 'DUMMY_e0ca9122-0f1a-475b-b484-23928a42c5e8', 'NOTIF_ID': 'DUMMY_e0ca9122-0f1a-475b-b484-23928a42c5e8', 'NE_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'OBJ_NAME': '10.128.17.9', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.9', 'EMS_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
+2025-02-10 14:06:35,790 INFO: {'ID': 'DUMMY_f84c0295-a719-439e-b1dc-d3768083de24', 'NOTIF_ID': 'DUMMY_f84c0295-a719-439e-b1dc-d3768083de24', 'NE_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'OBJ_NAME': '10.128.17.53', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.53', 'EMS_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 10, 10, 27, 48), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
+2025-02-10 14:06:35,805 INFO: No new isolated nodes detected after node_not_reachable alarms ['DUMMY_b18744e5-e868-49c4-8f37-d210db6e744a', 'DUMMY_e0ca9122-0f1a-475b-b484-23928a42c5e8', 'DUMMY_f84c0295-a719-439e-b1dc-d3768083de24'].

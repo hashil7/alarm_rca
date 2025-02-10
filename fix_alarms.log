@@ -1,0 +1,4 @@
+2025-02-10 10:16:30,424 ERROR: Error moving alarms to alarm_hist: 1062 (23000): Duplicate entry '10.128.17.88-link_down-14-2025-02-10 09:54:45-2025-02-10 09:54:4' for key 'alarm_hist_dummy.ALARM_HIST_DUMMY_uk2'
+2025-02-10 10:16:30,431 INFO: MySQL connection is closed.
+2025-02-10 10:29:17,379 INFO: Successfully moved 4 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-10 10:29:17,390 INFO: MySQL connection is closed.
