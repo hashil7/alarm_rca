@@ -2,3 +2,7 @@
 2025-02-10 10:16:30,431 INFO: MySQL connection is closed.
 2025-02-10 10:29:17,379 INFO: Successfully moved 4 alarm record(s) to alarm_hist table and removed from alarm table.
 2025-02-10 10:29:17,390 INFO: MySQL connection is closed.
+2025-02-10 15:48:24,885 INFO: Successfully moved 2 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-10 15:48:24,893 INFO: MySQL connection is closed.
+2025-02-10 15:49:04,913 INFO: Successfully moved 2 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-10 15:49:04,916 INFO: MySQL connection is closed.

@@ -132,7 +132,7 @@ def move_alarms_to_history(alarm_ids):
             print("MySQL connection is closed.")
 
 if __name__ == "__main__":
-    alarm_ids = ['LIN_20250210095444_59b3668b8965','LIN_20250210095445_80372af1251e','DUMMY_5dbada7d-34f1-4a63-a135-109c0c3145a1','DUMMY_fe165912-1ff9-4e71-9d63-8e58f43fee2b']  # Example list of alarm IDs
+    alarm_ids = ['LIN_20250210154501_46fac009b4cd','LIN_20250210154501_ad0dd6b2acb3','DUMMY_477e8af9-965a-4e7a-98bc-89f4538aead4','DUMMY_aa008cfb-fd96-4199-a793-2f4b15eff3cb']  # Example list of alarm IDs
     move_alarms_to_history(alarm_ids)
 
 
