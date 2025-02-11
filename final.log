@@ -28,9 +28,8 @@ Root Cause alarms: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6
 Child alarm IDs: DUMMY_477e8af9-965a-4e7a-98bc-89f4538aead4, DUMMY_aa008cfb-fd96-4199-a793-2f4b15eff3cb, DUMMY_7ebb48ff-6c46-4e97-b83f-6c61a4785d65, DUMMY_a64f0c0a-efd6-49fb-88fa-72449de70e08, DUMMY_0d598be1-e574-4f55-9faa-069934b22e94
 Added to root cause mapping with key: LIN_20250210154501_46fac009b4cd_LIN_20250210154501_ad0dd6b2acb3
 2025-02-10 15:46:03,036 INFO: The logical cuts does not cover all logical rings...cannot be a physical cut
-2025-02-10 15:52:50,697 INFO: Processing fixed alarms NE_TIME group: 2025-02-10 15:45:02
-2025-02-10 15:52:50,702 INFO: Restored edge in graph: KUMHI <--> BERLA
-2025-02-10 15:52:50,703 INFO: Fixed link_down detected:
+
+2025-02-10 16:47:13,860 INFO: Fixed link_down detected:
    Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
    Endpoints: 10.128.0.16:13 <--> 10.128.17.88:14
    Connection Name: KUMHI-BERLA
@@ -41,8 +40,33 @@ Added to root cause mapping with key: LIN_20250210154501_46fac009b4cd_LIN_202502
    District: Bemetara
    Graph updated: Edge restored
 ----------------------------------------
-2025-02-10 15:52:50,705 INFO: Fixed link_down detected:
-   Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
+
+Processing fixed alarms NE_TIME group: 2025-02-10 15:45:02
+
+2025-02-10 17:01:09,517 INFO:
+Restoring node BERLAKALA in the graph
+
+2025-02-10 17:01:09,517 INFO:
+Fixed node_not_reachable alarm for node BERLAKALA (Alarm ID: DUMMY_477e8af9-965a-4e7a-98bc-89f4538aead4)
+
+2025-02-10 17:01:09,517 INFO:
+Restoring node DHABA in the graph
+
+2025-02-10 17:01:09,518 INFO:
+Fixed node_not_reachable alarm for node DHABA (Alarm ID: DUMMY_aa008cfb-fd96-4199-a793-2f4b15eff3cb)
+
+2025-02-10 17:01:09,556 INFO:
+Restored edge in graph: KUMHI <--> BERLA
+
+2025-02-10 17:01:09,556 INFO:
+================================================================================
+FIXED LINK DOWN DETECTED
+================================================================================
+Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
+Root Cause Connections: KUMHI-BERLA
+Originally Isolated Nodes: BERLAKALA, DHABA, GUDHELI, KOHDIYA, KUMHI
+
+Connection Details:
    Endpoints: 10.128.0.16:13 <--> 10.128.17.88:14
    Connection Name: KUMHI-BERLA
    LR Ring: Ring no.01
@@ -50,193 +74,22 @@ Added to root cause mapping with key: LIN_20250210154501_46fac009b4cd_LIN_202502
    Physical Segments: 127,128,129,130
    Block: Berla
    District: Bemetara
-   Graph updated: Edge restored
-----------------------------------------
-2025-02-10 15:52:50,745 INFO: Processing fixed alarms NE_TIME group: 2025-02-10 15:46:02
-2025-02-10 15:52:50,775 INFO: Processing NE_TIME group: 2025-02-10 09:39:04
-2025-02-10 15:52:50,817 INFO: Due to the below alarms a logical cut has happened:
-   Alarm IDs: LIN_20250210093904_199e250690c4 and LIN_20250210093904_1f3d6f09bae8
-   Endpoints: 10.128.17.53:13 <--> 10.128.17.31:14
-   Connection Name: GADAMOR-KOHDIYA
-   LR Ring: Ring no.01
-   Physical Ring: BERLA_Blue
-   Physical Segments: 114
-   Block: BERLA
-   District: BEMETARA
-----------------------------------------
-2025-02-10 15:52:50,823 INFO: No isolated nodes after the cut.
-2025-02-10 15:52:50,830 INFO: The logical cuts does not cover all logical rings...cannot be a physical cut
-2025-02-10 15:52:50,831 INFO: Processing NE_TIME group: 2025-02-10 15:46:02
-2025-02-10 15:52:50,832 INFO: {'ID': 'DUMMY_0d598be1-e574-4f55-9faa-069934b22e94', 'NOTIF_ID': 'DUMMY_0d598be1-e574-4f55-9faa-069934b22e94', 'NE_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'OBJ_NAME': '10.128.17.88', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.88', 'EMS_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
-2025-02-10 15:52:50,878 INFO: {'ID': 'DUMMY_7ebb48ff-6c46-4e97-b83f-6c61a4785d65', 'NOTIF_ID': 'DUMMY_7ebb48ff-6c46-4e97-b83f-6c61a4785d65', 'NE_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'OBJ_NAME': '10.128.17.35', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.35', 'EMS_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
-2025-02-10 15:52:50,888 INFO: {'ID': 'DUMMY_a64f0c0a-efd6-49fb-88fa-72449de70e08', 'NOTIF_ID': 'DUMMY_a64f0c0a-efd6-49fb-88fa-72449de70e08', 'NE_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'OBJ_NAME': '10.128.17.53', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.53', 'EMS_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
-2025-02-10 15:52:50,907 INFO: 
-2025-02-10 15:52:50,915 INFO: 
-2025-02-10 15:52:50,916 INFO: 
-[ALARM ALERT] New isolated nodes detected due to node_not_reachable alarms:
-    Root Cause Alarm IDs : DUMMY_0d598be1-e574-4f55-9faa-069934b22e94, DUMMY_7ebb48ff-6c46-4e97-b83f-6c61a4785d65, DUMMY_a64f0c0a-efd6-49fb-88fa-72449de70e08
-    Isolated Nodes       : BERLAKALA, DHABA
-    Child Alarm IDs      : DUMMY_6baba29b-a618-49f4-a0d0-808b2a449d98, DUMMY_4aab1d4e-2149-44f4-8624-9e374dd91db9
----------------------------------------------------------------------
-2025-02-10 15:57:39,181 INFO: Processing fixed alarms NE_TIME group: 2025-02-10 15:45:02
-2025-02-10 15:57:39,192 INFO: Restored edge in graph: KUMHI <--> BERLA
-2025-02-10 15:57:39,192 INFO: Fixed link_down detected:
-   Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
-   Endpoints: 10.128.0.16:13 <--> 10.128.17.88:14
-   Connection Name: KUMHI-BERLA
-   LR Ring: Ring no.01
-   Physical Ring: BERLA_Blue
-   Physical Segments: 127,128,129,130
-   Block: Berla
-   District: Bemetara
-   Graph updated: Edge restored
-----------------------------------------
-2025-02-10 15:57:39,194 INFO: Fixed link_down detected:
-   Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
-   Endpoints: 10.128.0.16:13 <--> 10.128.17.88:14
-   Connection Name: KUMHI-BERLA
-   LR Ring: Ring no.01
-   Physical Ring: BERLA_Blue
-   Physical Segments: 127,128,129,130
-   Block: Berla
-   District: Bemetara
-   Graph updated: Edge restored
-----------------------------------------
-2025-02-10 15:57:39,245 INFO: Processing fixed alarms NE_TIME group: 2025-02-10 15:46:02
-2025-02-10 15:57:39,262 INFO: Processing NE_TIME group: 2025-02-10 15:46:02
-2025-02-10 15:57:39,263 INFO: {'ID': 'DUMMY_0d598be1-e574-4f55-9faa-069934b22e94', 'NOTIF_ID': 'DUMMY_0d598be1-e574-4f55-9faa-069934b22e94', 'NE_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'OBJ_NAME': '10.128.17.88', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.88', 'EMS_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
-2025-02-10 15:57:39,310 INFO: {'ID': 'DUMMY_7ebb48ff-6c46-4e97-b83f-6c61a4785d65', 'NOTIF_ID': 'DUMMY_7ebb48ff-6c46-4e97-b83f-6c61a4785d65', 'NE_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'OBJ_NAME': '10.128.17.35', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.35', 'EMS_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
-2025-02-10 15:57:39,320 INFO: {'ID': 'DUMMY_a64f0c0a-efd6-49fb-88fa-72449de70e08', 'NOTIF_ID': 'DUMMY_a64f0c0a-efd6-49fb-88fa-72449de70e08', 'NE_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'OBJ_NAME': '10.128.17.53', 'OBJ_TYPE': 'GP_ROUTER', 'RES_NAME': '10.128.17.53', 'EMS_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'PROB_CAUSE': 'node_not_reachable', 'PERC_SEVERITY': 1, 'NMS_SEVERITY': 1, 'ADDI_INFO': None, 'RCA_INDICATOR': None, 'RCA_ID': None, 'VISIBLE': None, 'TT_ID': None, 'LOG_TIME': datetime.datetime(2025, 2, 10, 15, 46, 2), 'LOCATION_ID': 0, 'PROCESS_FLAG': 3, 'REMARKS': 'Dummy alarm for testing device down', 'CATEGORY': 'EQUIPMENT ALARMS', 'interface': None, 'RFO': None, 'FIBER_DETAILS': None, 'LATEST_RFO': None, 'PREVIOUS_TT_ID': None, 'PREVIOUS_RCA_ID': None, 'UPS_BATTERY_PERCENT': None}
-2025-02-10 15:57:39,338 INFO: 
-2025-02-10 15:57:39,347 INFO: 
-2025-02-10 15:57:39,347 INFO: 
-[ALARM ALERT] New isolated nodes detected due to node_not_reachable alarms:
-    Root Cause Alarm IDs : DUMMY_0d598be1-e574-4f55-9faa-069934b22e94, DUMMY_7ebb48ff-6c46-4e97-b83f-6c61a4785d65, DUMMY_a64f0c0a-efd6-49fb-88fa-72449de70e08
-    Isolated Nodes       : BERLAKALA, DHABA
-    Child Alarm IDs      : DUMMY_aa0ca561-4221-4ac7-a525-7a46887e3ff2, DUMMY_a3f53da3-6988-40be-b5a4-afb521ee0a1b
----------------------------------------------------------------------
-2025-02-10 15:59:14,300 INFO: Processing fixed alarms NE_TIME group: 2025-02-10 15:45:02
-2025-02-10 15:59:14,305 INFO: Restored edge in graph: KUMHI <--> BERLA
-2025-02-10 15:59:14,305 INFO: Fixed link_down detected:
-   Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
-   Endpoints: 10.128.0.16:13 <--> 10.128.17.88:14
-   Connection Name: KUMHI-BERLA
-   LR Ring: Ring no.01
-   Physical Ring: BERLA_Blue
-   Physical Segments: 127,128,129,130
-   Block: Berla
-   District: Bemetara
-   Graph updated: Edge restored
-----------------------------------------
-2025-02-10 15:59:14,340 INFO: Fixed link_down detected:
-   Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
-   Endpoints: 10.128.0.16:13 <--> 10.128.17.88:14
-   Connection Name: KUMHI-BERLA
-   LR Ring: Ring no.01
-   Physical Ring: BERLA_Blue
-   Physical Segments: 127,128,129,130
-   Block: Berla
-   District: Bemetara
-   Graph updated: Edge restored
-----------------------------------------
-2025-02-10 15:59:14,359 INFO: Processing fixed alarms NE_TIME group: 2025-02-10 15:46:02
-2025-02-10 16:02:36,907 INFO: Processing fixed alarms NE_TIME group: 2025-02-10 15:45:02
-2025-02-10 16:02:36,913 INFO: Restored edge in graph: KUMHI <--> BERLA
-2025-02-10 16:02:36,913 INFO: Fixed link_down detected:
-   Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
-   Endpoints: 10.128.0.16:13 <--> 10.128.17.88:14
-   Connection Name: KUMHI-BERLA
-   LR Ring: Ring no.01
-   Physical Ring: BERLA_Blue
-   Physical Segments: 127,128,129,130
-   Block: Berla
-   District: Bemetara
-   Graph updated: Edge restored
-----------------------------------------
-2025-02-10 16:02:36,915 INFO: Fixed link_down detected:
-   Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
-   Endpoints: 10.128.0.16:13 <--> 10.128.17.88:14
-   Connection Name: KUMHI-BERLA
-   LR Ring: Ring no.01
-   Physical Ring: BERLA_Blue
-   Physical Segments: 127,128,129,130
-   Block: Berla
-   District: Bemetara
-   Graph updated: Edge restored
-----------------------------------------
-2025-02-10 16:02:36,921 INFO: Processing fixed alarms NE_TIME group: 2025-02-10 15:46:02
-2025-02-10 16:03:07,092 INFO: Processing fixed alarms NE_TIME group: 2025-02-10 15:45:02
-2025-02-10 16:03:07,099 INFO: Restored edge in graph: KUMHI <--> BERLA
-2025-02-10 16:03:07,100 INFO: Fixed link_down detected:
-   Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
-   Endpoints: 10.128.0.16:13 <--> 10.128.17.88:14
-   Connection Name: KUMHI-BERLA
-   LR Ring: Ring no.01
-   Physical Ring: BERLA_Blue
-   Physical Segments: 127,128,129,130
-   Block: Berla
-   District: Bemetara
-   Graph updated: Edge restored
-----------------------------------------
-2025-02-10 16:03:07,102 INFO: Fixed link_down detected:
-   Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
-   Endpoints: 10.128.0.16:13 <--> 10.128.17.88:14
-   Connection Name: KUMHI-BERLA
-   LR Ring: Ring no.01
-   Physical Ring: BERLA_Blue
-   Physical Segments: 127,128,129,130
-   Block: Berla
-   District: Bemetara
-   Graph updated: Edge restored
-----------------------------------------
-2025-02-10 16:03:07,117 INFO: Processing fixed alarms NE_TIME group: 2025-02-10 15:46:02
-2025-02-10 16:04:36,926 INFO: Processing fixed alarms NE_TIME group: 2025-02-10 15:45:02
-2025-02-10 16:04:36,931 INFO: Restored edge in graph: KUMHI <--> BERLA
-2025-02-10 16:04:36,931 INFO: Fixed link_down detected:
-   Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
-   Endpoints: 10.128.0.16:13 <--> 10.128.17.88:14
-   Connection Name: KUMHI-BERLA
-   LR Ring: Ring no.01
-   Physical Ring: BERLA_Blue
-   Physical Segments: 127,128,129,130
-   Block: Berla
-   District: Bemetara
-   Graph updated: Edge restored
-----------------------------------------
-2025-02-10 16:04:36,934 INFO: Fixed link_down detected:
-   Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
-   Endpoints: 10.128.0.16:13 <--> 10.128.17.88:14
-   Connection Name: KUMHI-BERLA
-   LR Ring: Ring no.01
-   Physical Ring: BERLA_Blue
-   Physical Segments: 127,128,129,130
-   Block: Berla
-   District: Bemetara
-   Graph updated: Edge restored
-----------------------------------------
-2025-02-10 16:04:36,940 INFO: Processing fixed alarms NE_TIME group: 2025-02-10 15:46:02
-2025-02-10 16:09:37,021 INFO: Processing fixed alarms NE_TIME group: 2025-02-10 15:45:02
-2025-02-10 16:09:37,026 INFO: Restored edge in graph: KUMHI <--> BERLA
-2025-02-10 16:09:37,027 INFO: Fixed link_down detected:
-   Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
-   Endpoints: 10.128.0.16:13 <--> 10.128.17.88:14
-   Connection Name: KUMHI-BERLA
-   LR Ring: Ring no.01
-   Physical Ring: BERLA_Blue
-   Physical Segments: 127,128,129,130
-   Block: Berla
-   District: Bemetara
-   Graph updated: Edge restored
-----------------------------------------
-2025-02-10 16:09:37,040 INFO: Fixed link_down detected:
-   Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
-   Endpoints: 10.128.0.16:13 <--> 10.128.17.88:14
-   Connection Name: KUMHI-BERLA
-   LR Ring: Ring no.01
-   Physical Ring: BERLA_Blue
-   Physical Segments: 127,128,129,130
-   Block: Berla
-   District: Bemetara
-   Graph updated: Edge restored
-----------------------------------------
-2025-02-10 16:09:37,083 INFO: Processing fixed alarms NE_TIME group: 2025-02-10 15:46:02
+   Graph Status: Edge restored
+================================================================================
+
+2025-02-10 17:01:09,591 WARNING:
+================================================================================
+WARNING: INCOMPLETE RESTORATION
+================================================================================
+Root Cause Alarms (LIN_20250210154501_46fac009b4cd_LIN_20250210154501_ad0dd6b2acb3) fixed but some alarms remain:
+
+Fixed:
+    Alarm IDs: DUMMY_477e8af9-965a-4e7a-98bc-89f4538aead4, DUMMY_aa008cfb-fd96-4199-a793-2f4b15eff3cb
+    Nodes: BERLAKALA, DHABA
+
+Remaining:
+    Alarm IDs: DUMMY_0d598be1-e574-4f55-9faa-069934b22e94, DUMMY_a64f0c0a-efd6-49fb-88fa-72449de70e08, DUMMY_7ebb48ff-6c46-4e97-b83f-6c61a4785d65
+    Nodes: GUDHELI, KOHDIYA, KUMHI
+Note: Possible power failure for remaining nodes
+================================================================================
+

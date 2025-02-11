@@ -7,13 +7,14 @@ from itertools import combinations
 import logging
 import networkx as nx
 import uuid
-
+# Initialize root_cause_mapping based on log file
 root_cause_mapping = {}
+
 node_edges_backup = {}  # Store edges when removing nodes
 
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s %(levelname)s: %(message)s',
+    format='%(asctime)s %(levelname)s:\n%(message)s\n',
     handlers=[
         logging.FileHandler("final.log", mode="a"),
         logging.StreamHandler()
@@ -48,7 +49,7 @@ if 'persistent_physical_graph' not in globals():
     print("Global physical graph constructed.")
 
 if 'logged_isolated_nodes' not in globals():
-  logged_isolated_nodes = set()
+  logged_isolated_nodes = {'BERLAKALA', 'DHABA', 'GUDHELI', 'KOHDIYA', 'KUMHI'}
   print(f"Logged isolated initially: {logged_isolated_nodes}")
 last_processed_time = datetime.strptime("2025-02-10 15:45:00", "%Y-%m-%d %H:%M:%S")
 
@@ -198,7 +199,7 @@ while True:
         if prob_cause == "link_down":
             fixed_groups[ne_time].append(("link_down", row))
         elif prob_cause == "node_not_reachable":
-            print(f"Node not reachable alarm: {row}")
+
             fixed_groups[ne_time].append(("node_not_reachable", row))
     
     # Process fixed alarms
@@ -211,26 +212,33 @@ while True:
             
             # Process fixed node_not_reachable alarms
             node_down_group = [alarm for (atype, alarm) in group if atype == "node_not_reachable"]
+            print(f"Node down group: {node_down_group}")
             if node_down_group:
                 for alarm in node_down_group:
                     node_ip = alarm.get("OBJ_NAME")
                     alarm_id = alarm.get("ID")
                     
                     # Restore node and its edges in the graph
-                    if node_ip in logged_isolated_nodes:
-                        logging.info(f"Restoring node {node_ip} in the graph")
-                        logged_isolated_nodes.remove(node_ip)
-                        persistent_physical_graph.add_node(node_ip)
+                    # Find node name by IP
+                    node_name = None
+                    for node, attrs in persistent_physical_graph.nodes(data=True):
+                        if attrs.get('ip') == node_ip:
+                            node_name = node
+                            break
+                            
+                    if node_name and node_name in logged_isolated_nodes:
+                        logging.info(f"Restoring node {node_name} in the graph")
+                        logged_isolated_nodes.remove(node_name)
+                        persistent_physical_graph.add_node(node_name)
                         
                         # Restore backed up edges
-                        if node_ip in node_edges_backup:
-                            for edge in node_edges_backup[node_ip]:
+                        if node_name in node_edges_backup:
+                            for edge in node_edges_backup[node_name]:
                                 if edge[1] in persistent_physical_graph:  # Only restore if other endpoint exists
                                     persistent_physical_graph.add_edge(*edge)
-                            del node_edges_backup[node_ip]
+                            del node_edges_backup[node_name]
                         
-                        logging.info(f"Fixed node_not_reachable alarm for node {node_ip} (Alarm ID: {alarm_id})")
-            
+                        logging.info(f"Fixed node_not_reachable alarm for node {node_name} (Alarm ID: {alarm_id})")
             # Process fixed link_down alarms
             link_down_group = [alarm for (atype, alarm) in group if atype == "link_down"]
             if link_down_group:
@@ -267,63 +275,86 @@ while True:
                             logging.info(f"Restored edge in graph: {aend} <--> {bend}")
                         
                         # First log connection details
-                        log_message = (
-                            f"Fixed link_down detected:\n"
-                            f"   Alarm IDs: {id1} and {id2}\n"
-                            f"   Endpoints: {ip1}:{ifIndex1} <--> {ip2}:{ifIndex2}\n"
-                            f"   Connection Name: {connection_name}\n"
-                            f"   LR Ring: {lr_ring}\n"
-                            f"   Physical Ring: {curr_physicalring}\n"
-                            f"   Physical Segments: {physicalsegments}\n"
-                            f"   Block: {block}\n"
-                            f"   District: {district}\n"
-                            f"   Graph updated: Edge restored\n"
-                            "----------------------------------------"
-                        )
-                        logging.info(log_message)
+
                         
                         # Then check and log RCA details
                         root_cause_key = f"{min(id1, id2)}_{max(id1, id2)}"
                         if root_cause_key in root_cause_mapping:
-                            child_alarm_ids = root_cause_mapping[root_cause_key]
+                            child_alarm_ids = root_cause_mapping[root_cause_key]['ids']
                             fixed_node_alarms = {alarm.get("ID") for alarm in node_down_group}
-                            
+                            print(f"Fixed node alarms: {fixed_node_alarms}")
                             fixed_children = child_alarm_ids & fixed_node_alarms
                             remaining_children = child_alarm_ids - fixed_node_alarms
                             
+                            root_cause_names = root_cause_mapping[root_cause_key]['root_cause_names']
+                            isolated_nodes = root_cause_mapping[root_cause_key]['isolated_nodes']
+                            
+                            # Get node names for fixed and remaining alarms
+                            fixed_nodes = []
+                            remaining_nodes = []
+                            for alarm in node_down_group:
+                                alarm_id = alarm.get("ID")
+                                node_ip = alarm.get("OBJ_NAME")
+                                if alarm_id in fixed_children:
+                                    for node, attrs in persistent_physical_graph.nodes(data=True):
+                                        if attrs.get('ip') == node_ip:
+                                            fixed_nodes.append(node)
+                                            break
+                            
+                            # Get remaining nodes from isolated_nodes list that aren't fixed
+                            remaining_nodes = [node for node in isolated_nodes if node not in fixed_nodes]
+                            
+                            log_message = (
+                                "="*80 + "\n"
+                                "FIXED LINK DOWN DETECTED\n" +
+                                "="*80 + "\n"
+                                f"Alarm IDs: {id1} and {id2}\n"
+                                f"Root Cause Connections: {', '.join(root_cause_names)}\n"
+                                f"Originally Isolated Nodes: {', '.join(isolated_nodes)}\n\n"
+                                "Connection Details:\n"
+                                f"   Endpoints: {ip1}:{ifIndex1} <--> {ip2}:{ifIndex2}\n"
+                                f"   Connection Name: {connection_name}\n"
+                                f"   LR Ring: {lr_ring}\n"
+                                f"   Physical Ring: {curr_physicalring}\n"
+                                f"   Physical Segments: {physicalsegments}\n"
+                                f"   Block: {block}\n"
+                                f"   District: {district}\n"
+                                f"   Graph Status: Edge restored\n" +
+                                "="*80
+                            )
+                            logging.info(log_message)
+                            
                             if remaining_children:
                                 logging.warning(
-                                    f"Root cause analysis for {connection_name}:\n"
-                                    f"    Root cause alarms ({root_cause_key}) fixed but some child alarms remain:\n"
-                                    f"    Fixed children: {', '.join(map(str, fixed_children))}\n"
-                                    f"    Remaining children: {', '.join(map(str, remaining_children))}\n"
-                                    f"    Possible power failure for remaining nodes\n"
-                                    "----------------------------------------"
+                                    "="*80 + "\n"
+                                    "WARNING: INCOMPLETE RESTORATION\n" +
+                                    "="*80 + "\n"
+                                    f"Root Cause Alarms ({root_cause_key}) fixed but some alarms remain:\n\n"
+                                    "Fixed:\n"
+                                    f"    Alarm IDs: {', '.join(map(str, fixed_children))}\n"
+                                    f"    Nodes: {', '.join(fixed_nodes)}\n\n"
+                                    "Remaining:\n"
+                                    f"    Alarm IDs: {', '.join(map(str, remaining_children))}\n"
+                                    f"    Nodes: {', '.join(remaining_nodes)}\n"
+                                    f"Note: Possible power failure for remaining nodes\n" +
+                                    "="*80
                                 )
                             else:
                                 logging.info(
-                                    f"Root cause analysis for {connection_name}:\n"
-                                    f"    Root cause alarms ({root_cause_key}) and all child alarms resolved:\n"
-                                    f"    All children fixed: {', '.join(map(str, child_alarm_ids))}\n"
-                                    "----------------------------------------"
+                                    "="*80 + "\n"
+                                    "COMPLETE RESTORATION\n" +
+                                    "="*80 + "\n"
+                                    f"Root Cause Connection: {connection_name}\n"
+                                    f"Root Cause Alarms: {root_cause_key}\n"
+                                    "All alarms resolved:\n"
+                                    f"    Alarm IDs: {', '.join(map(str, child_alarm_ids))}\n"
+                                    f"    Nodes: {', '.join(isolated_nodes)}\n" +
+                                    "="*80
                                 )
                             
                             del root_cause_mapping[root_cause_key]
                         
-                        log_message = (
-                            f"Fixed link_down detected:\n"
-                            f"   Alarm IDs: {id1} and {id2}\n"
-                            f"   Endpoints: {ip1}:{ifIndex1} <--> {ip2}:{ifIndex2}\n"
-                            f"   Connection Name: {connection_name}\n"
-                            f"   LR Ring: {lr_ring}\n"
-                            f"   Physical Ring: {curr_physicalring}\n"
-                            f"   Physical Segments: {physicalsegments}\n"
-                            f"   Block: {block}\n"
-                            f"   District: {district}\n"
-                            f"   Graph updated: Edge restored\n"
-                            "----------------------------------------"
-                        )
-                        logging.info(log_message)
+
                         
                         lr_rings_in_group.append(lr_ring)
                         physical_segments_in_group.append(physicalsegments)
@@ -339,8 +370,14 @@ while True:
                         if unique_physical_segment:
                             physical_cut = get_physical_connection(unique_physical_segment.pop())
                             logging.info(
-                                f"All the fixed alarms at {ne_time} indicate a restored OFC.\n"
-                                f"Connection: {physical_cut} in Physical Ring: {physicalring}"
+                                "="*80 + "\n"
+                                "PHYSICAL CUT DETECTED\n" +
+                                "="*80 + "\n"
+                                f"Time: {ne_time}\n"
+                                f"Physical Ring: {physicalring}\n"
+                                f"Connection: {physical_cut}\n"
+                                f"Affected Logical Rings: {', '.join(map(str, distinct_rings))}\n" +
+                                "="*80
                             )
 
     # Then proceed with checking active alarms (existing code)
@@ -477,15 +514,26 @@ while True:
                             child_alarms.append(dummy_id)
                             print("Inserted alarm")
                         
-                        # Store root cause and child alarm mapping
+                        # Store root cause and child alarm mapping with additional information
                         root_cause_key = f"{min(id1, id2)}_{max(id1, id2)}"  # Consistent ordering
-                        root_cause_mapping[root_cause_key] = set(child_alarms)
+                        root_cause_mapping[root_cause_key] = {
+                            'ids': set(child_alarms),
+                            'root_cause_names': [connection_name],
+                            'isolated_nodes': list(new_isolated)
+                        }
                         
                         root_cause_alarm_ids = f"{id1} and {id2}"
-                        logging.info(f"Isolated nodes after logical cut: {new_isolated}\n"
-                                    f"Root Cause alarms: {root_cause_alarm_ids}\n"
-                                    f"Child alarm IDs: {', '.join(map(str, child_alarms))}\n"
-                                    f"Added to root cause mapping with key: {root_cause_key}")
+                        logging.info(
+                            "="*80 + "\n"
+                            "NEW LOGICAL CUT DETECTED\n" +
+                            "="*80 + "\n"
+                            f"Isolated Nodes: {new_isolated}\n"
+                            f"Root Cause Alarms: {root_cause_alarm_ids}\n"
+                            f"Child Alarm IDs: {', '.join(map(str, child_alarms))}\n"
+                            f"Root Cause Connection: {connection_name}\n"
+                            f"Root Cause Mapping Key: {root_cause_key}\n" +
+                            "="*80
+                        )
                         
                         print("Isolated nodes after logical cut:", new_isolated)
                         logged_isolated_nodes.update(new_isolated)
