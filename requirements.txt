@@ -1,0 +1,8 @@
+mysql-connector-python==9.2.0
+networkx==3.4.2
+pandas==2.2.3
+matplotlib==3.10.0
+python-dateutil==2.9.0.post0
+logging==0.5.1.2
+time
+itertools

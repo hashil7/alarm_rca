@@ -1,7 +1,9 @@
+2025-02-11 14:15:21,562 INFO:
+Processing NE_TIME group: 2025-02-11 12:07:20
 
-2025-02-10 15:46:02,785 INFO: Processing NE_TIME group: 2025-02-10 09:39:04
-2025-02-10 15:46:02,829 INFO: Due to the below alarms a logical cut has happened:
-   Alarm IDs: LIN_20250210093904_199e250690c4 and LIN_20250210093904_1f3d6f09bae8
+2025-02-11 14:15:21,577 INFO:
+Due to the below alarms a logical cut has happened:
+   Alarm IDs: LIN_20250211120719_1ff8d49831fe and LIN_20250211120719_fa70fd7056bc
    Endpoints: 10.128.17.53:13 <--> 10.128.17.31:14
    Connection Name: GADAMOR-KOHDIYA
    LR Ring: Ring no.01
@@ -10,12 +12,20 @@
    Block: BERLA
    District: BEMETARA
 ----------------------------------------
-2025-02-10 15:46:02,834 INFO: No isolated nodes after the cut.
-2025-02-10 15:46:02,839 INFO: The logical cuts does not cover all logical rings...cannot be a physical cut
-2025-02-10 15:46:02,840 INFO: Processing NE_TIME group: 2025-02-10 15:45:02
-2025-02-10 15:46:02,890 INFO: Due to the below alarms a logical cut has happened:
-   Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
-   Endpoints: 10.128.0.16:13 <--> 10.128.17.88:14
+
+2025-02-11 14:15:21,582 INFO:
+No isolated nodes after the cut.
+
+2025-02-11 14:15:21,596 INFO:
+The logical cuts does not cover all logical rings...cannot be a physical cut
+
+2025-02-11 14:15:21,597 INFO:
+Processing NE_TIME group: 2025-02-11 14:14:19
+
+2025-02-11 14:15:21,607 INFO:
+Due to the below alarms a logical cut has happened:
+   Alarm IDs: LIN_20250211141419_818d3f5c8afd and LIN_20250211141419_86f1a673b831
+   Endpoints: 10.128.17.88:14 <--> 10.128.0.16:13
    Connection Name: KUMHI-BERLA
    LR Ring: Ring no.01
    Physical Ring: BERLA_Blue
@@ -23,51 +33,41 @@
    Block: Berla
    District: Bemetara
 ----------------------------------------
-2025-02-10 15:46:03,005 INFO: Isolated nodes after logical cut: {'BERLAKALA', 'DHABA', 'GUDHELI', 'KOHDIYA', 'KUMHI'}
-Root Cause alarms: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
-Child alarm IDs: DUMMY_477e8af9-965a-4e7a-98bc-89f4538aead4, DUMMY_aa008cfb-fd96-4199-a793-2f4b15eff3cb, DUMMY_7ebb48ff-6c46-4e97-b83f-6c61a4785d65, DUMMY_a64f0c0a-efd6-49fb-88fa-72449de70e08, DUMMY_0d598be1-e574-4f55-9faa-069934b22e94
-Added to root cause mapping with key: LIN_20250210154501_46fac009b4cd_LIN_20250210154501_ad0dd6b2acb3
-2025-02-10 15:46:03,036 INFO: The logical cuts does not cover all logical rings...cannot be a physical cut
 
-2025-02-10 16:47:13,860 INFO: Fixed link_down detected:
-   Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
-   Endpoints: 10.128.0.16:13 <--> 10.128.17.88:14
-   Connection Name: KUMHI-BERLA
-   LR Ring: Ring no.01
-   Physical Ring: BERLA_Blue
-   Physical Segments: 127,128,129,130
-   Block: Berla
-   District: Bemetara
-   Graph updated: Edge restored
-----------------------------------------
+2025-02-11 14:15:21,658 INFO:
+================================================================================
+Isolated Nodes: {'KUMHI', 'DHABA', 'GUDHELI', 'KOHDIYA', 'BERLAKALA'}
+Root Cause Alarms: LIN_20250211141419_818d3f5c8afd and LIN_20250211141419_86f1a673b831
+Child Alarm IDs: DUMMY_71cae578-dd35-40c2-9dbe-9cac9681b8ea, DUMMY_0504ef13-70f7-433c-9d22-17ec6cf722d5, DUMMY_71a4a70b-c67a-4474-b5e7-0d43ad85fdf5, DUMMY_8478c46b-1e99-4ebf-927d-c118559f0311, DUMMY_457fef4f-99ed-48ca-8d7f-7dd281bb1cd3
+Root Cause Connection: KUMHI-BERLA
+Root Cause Mapping Key: LIN_20250211141419_818d3f5c8afd_LIN_20250211141419_86f1a673b831
+================================================================================
 
-Processing fixed alarms NE_TIME group: 2025-02-10 15:45:02
+2025-02-11 14:15:21,669 INFO:
+The logical cuts does not cover all logical rings...cannot be a physical cut
 
-2025-02-10 17:01:09,517 INFO:
-Restoring node BERLAKALA in the graph
+2025-02-11 14:17:20,251 INFO:
+Processing fixed alarms NE_TIME group: 2025-02-11 14:17:04
 
-2025-02-10 17:01:09,517 INFO:
-Fixed node_not_reachable alarm for node BERLAKALA (Alarm ID: DUMMY_477e8af9-965a-4e7a-98bc-89f4538aead4)
+2025-02-11 14:17:20,254 INFO:
+Restoring node KUMHI in the graph
 
-2025-02-10 17:01:09,517 INFO:
-Restoring node DHABA in the graph
+2025-02-11 14:17:20,255 INFO:
+Fixed node_not_reachable alarm for node KUMHI (Alarm ID: DUMMY_71cae578-dd35-40c2-9dbe-9cac9681b8ea)
 
-2025-02-10 17:01:09,518 INFO:
-Fixed node_not_reachable alarm for node DHABA (Alarm ID: DUMMY_aa008cfb-fd96-4199-a793-2f4b15eff3cb)
-
-2025-02-10 17:01:09,556 INFO:
+2025-02-11 14:17:20,262 INFO:
 Restored edge in graph: KUMHI <--> BERLA
 
-2025-02-10 17:01:09,556 INFO:
+2025-02-11 14:17:20,263 INFO:
 ================================================================================
 FIXED LINK DOWN DETECTED
 ================================================================================
-Alarm IDs: LIN_20250210154501_46fac009b4cd and LIN_20250210154501_ad0dd6b2acb3
+Alarm IDs: LIN_20250211141419_818d3f5c8afd and LIN_20250211141419_86f1a673b831
 Root Cause Connections: KUMHI-BERLA
-Originally Isolated Nodes: BERLAKALA, DHABA, GUDHELI, KOHDIYA, KUMHI
+Originally Isolated Nodes: KUMHI, DHABA, GUDHELI, KOHDIYA, BERLAKALA
 
 Connection Details:
-   Endpoints: 10.128.0.16:13 <--> 10.128.17.88:14
+   Endpoints: 10.128.17.88:14 <--> 10.128.0.16:13
    Connection Name: KUMHI-BERLA
    LR Ring: Ring no.01
    Physical Ring: BERLA_Blue
@@ -77,19 +77,19 @@ Connection Details:
    Graph Status: Edge restored
 ================================================================================
 
-2025-02-10 17:01:09,591 WARNING:
+2025-02-11 14:17:20,266 WARNING:
 ================================================================================
 WARNING: INCOMPLETE RESTORATION
 ================================================================================
-Root Cause Alarms (LIN_20250210154501_46fac009b4cd_LIN_20250210154501_ad0dd6b2acb3) fixed but some alarms remain:
+Root Cause Alarms (LIN_20250211141419_818d3f5c8afd_LIN_20250211141419_86f1a673b831) fixed but some alarms remain:
 
 Fixed:
-    Alarm IDs: DUMMY_477e8af9-965a-4e7a-98bc-89f4538aead4, DUMMY_aa008cfb-fd96-4199-a793-2f4b15eff3cb
-    Nodes: BERLAKALA, DHABA
+    Alarm IDs: DUMMY_71cae578-dd35-40c2-9dbe-9cac9681b8ea
+    Nodes: KUMHI
 
 Remaining:
-    Alarm IDs: DUMMY_0d598be1-e574-4f55-9faa-069934b22e94, DUMMY_a64f0c0a-efd6-49fb-88fa-72449de70e08, DUMMY_7ebb48ff-6c46-4e97-b83f-6c61a4785d65
-    Nodes: GUDHELI, KOHDIYA, KUMHI
+    Alarm IDs: DUMMY_8478c46b-1e99-4ebf-927d-c118559f0311, DUMMY_71a4a70b-c67a-4474-b5e7-0d43ad85fdf5, DUMMY_0504ef13-70f7-433c-9d22-17ec6cf722d5, DUMMY_457fef4f-99ed-48ca-8d7f-7dd281bb1cd3
+    Nodes: DHABA, GUDHELI, KOHDIYA, BERLAKALA
 Note: Possible power failure for remaining nodes
 ================================================================================
 

@@ -6,3 +6,41 @@
 2025-02-10 15:48:24,893 INFO: MySQL connection is closed.
 2025-02-10 15:49:04,913 INFO: Successfully moved 2 alarm record(s) to alarm_hist table and removed from alarm table.
 2025-02-10 15:49:04,916 INFO: MySQL connection is closed.
+2025-02-11 10:24:03,657 INFO: Successfully moved 3 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 10:24:03,665 INFO: MySQL connection is closed.
+2025-02-11 10:24:47,363 INFO: Successfully moved 1 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 10:24:47,369 INFO: MySQL connection is closed.
+2025-02-11 11:21:56,071 INFO: Successfully moved 2 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 11:21:56,131 INFO: MySQL connection is closed.
+2025-02-11 11:22:52,744 INFO: Successfully moved 1 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 11:22:52,752 INFO: MySQL connection is closed.
+2025-02-11 11:23:27,975 INFO: Successfully moved 1 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 11:23:27,982 INFO: MySQL connection is closed.
+2025-02-11 11:40:08,919 INFO: Successfully moved 3 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 11:40:08,921 INFO: MySQL connection is closed.
+2025-02-11 11:40:44,567 INFO: Successfully moved 1 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 11:40:44,577 INFO: MySQL connection is closed.
+2025-02-11 11:41:05,468 INFO: No alarms found for the provided alarm IDs.
+2025-02-11 11:41:05,497 INFO: MySQL connection is closed.
+2025-02-11 11:43:43,851 INFO: Successfully moved 3 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 11:43:43,862 INFO: MySQL connection is closed.
+2025-02-11 11:46:58,355 INFO: Successfully moved 3 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 11:46:58,376 INFO: MySQL connection is closed.
+2025-02-11 11:53:31,910 INFO: Successfully moved 3 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 11:53:31,922 INFO: MySQL connection is closed.
+2025-02-11 12:12:01,448 INFO: Successfully moved 3 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 12:12:01,453 INFO: MySQL connection is closed.
+2025-02-11 12:33:13,999 INFO: Successfully moved 3 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 12:33:14,010 INFO: MySQL connection is closed.
+2025-02-11 13:47:29,287 INFO: Successfully moved 3 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 13:47:29,291 INFO: MySQL connection is closed.
+2025-02-11 13:50:55,302 INFO: Successfully moved 3 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 13:50:55,307 INFO: MySQL connection is closed.
+2025-02-11 13:58:05,419 INFO: Successfully moved 3 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 13:58:05,424 INFO: MySQL connection is closed.
+2025-02-11 14:04:04,728 INFO: Successfully moved 3 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 14:04:04,733 INFO: MySQL connection is closed.
+2025-02-11 14:06:26,021 INFO: Successfully moved 3 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 14:06:26,025 INFO: MySQL connection is closed.
+2025-02-11 14:17:03,766 INFO: Successfully moved 3 alarm record(s) to alarm_hist table and removed from alarm table.
+2025-02-11 14:17:03,771 INFO: MySQL connection is closed.

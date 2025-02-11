@@ -1,3 +1,5 @@
+import msvcrt
+import os
 import time
 import configparser
 import mysql.connector
@@ -30,11 +32,12 @@ db_config = {
     "database": config["mysql"]["database"]
 }
 mydb = mysql.connector.connect(**db_config)
-cursor = mydb.cursor(dictionary=True)
+cursor = mydb.cursor(dictionary=True,buffered=True)
 
 if 'persistent_physical_graph' not in globals():
     query_phys_topo = "SELECT aendname, bendname, aendip, bendip,block_name FROM topology_data_logical"
     cursor.execute(query_phys_topo)
+    mydb.commit()
     phys_rows = cursor.fetchall()
     persistent_physical_graph = nx.Graph()
     for row in phys_rows:
@@ -49,9 +52,11 @@ if 'persistent_physical_graph' not in globals():
     print("Global physical graph constructed.")
 
 if 'logged_isolated_nodes' not in globals():
-  logged_isolated_nodes = {'BERLAKALA', 'DHABA', 'GUDHELI', 'KOHDIYA', 'KUMHI'}
-  print(f"Logged isolated initially: {logged_isolated_nodes}")
-last_processed_time = datetime.strptime("2025-02-10 15:45:00", "%Y-%m-%d %H:%M:%S")
+    logged_isolated_nodes = set()
+
+# Initialize separate timestamps for each table
+last_processed_alarm_time = datetime.strptime("2025-02-10 9:30:00", "%Y-%m-%d %H:%M:%S")
+last_processed_hist_time = datetime.strptime("2025-02-10 9:30:00", "%Y-%m-%d %H:%M:%S")
 
 def get_connection_info(result_conn):
     """
@@ -75,6 +80,7 @@ def get_num_lrings(physical_ring):
     WHERE physicalringname = %s
   """
   cursor.execute(query_count, (physical_ring,))
+  mydb.commit()
   result_count = cursor.fetchone()
   count = result_count["logical_ring_count"]
   return count
@@ -86,6 +92,7 @@ def get_physical_connection(physicalsegment):
       WHERE ringname = %s AND segmentid = %s
     """
     cursor.execute(query_phys, (physicalring, physicalsegment))
+    mydb.commit()
     r = cursor.fetchone()
     if r:
         return f"{r['aendname']}-{r['bendname']}"
@@ -123,6 +130,7 @@ def get_block_from_ip(ip):
     """
     cursor.execute(query, (ip,))
     result = cursor.fetchone()
+    mydb.commit()
     if result and result['locationText']:
         location_text = result['locationText']
         
@@ -142,7 +150,7 @@ def get_block_from_ip(ip):
     logging.warning(f"Using fallback block 'BERLA' for IP {ip}")
     return "BERLA"   
 
-def insert_dummy_node_not_reachable_alarm(obj_name):
+def insert_dummy_node_not_reachable_alarm(obj_name,time):
 
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     # Create dummy IDs (using uuid for uniqueness)
@@ -162,7 +170,7 @@ def insert_dummy_node_not_reachable_alarm(obj_name):
     params = (
         dummy_id,               # ID
         dummy_notif_id,         # NOTIF_ID
-        now,                    # NE_TIME
+        time,                    # NE_TIME
         obj_name,               # OBJ_NAME
         "GP_ROUTER",            # OBJ_TYPE (example value)
         obj_name,               # RES_NAME (using obj_name as resource name)
@@ -181,15 +189,69 @@ def insert_dummy_node_not_reachable_alarm(obj_name):
     print(f"Inserted dummy node_not_reachable alarm for {obj_name} with ID {dummy_id}.")
     return dummy_id
 
+def wait_key_or_timeout(timeout):
+    """
+    Wait for a keypress or timeout after specified seconds.
+    Returns True if a key was pressed, False if timeout occurred.
+    """
+    # Windows implementation
+    if os.name == 'nt':
+        start_time = time.time()
+        while True:
+            # Check if key is pressed
+            if msvcrt.kbhit():
+                msvcrt.getch()  # clear the pressed key
+                return True
+            
+            # Check if timeout occurred
+            if time.time() - start_time > timeout:
+                return False
+            
+            # Small sleep to prevent high CPU usage
+            time.sleep(0.1)
+    
+    # Linux/Unix implementation
+    else:
+        # Set up stdin for reading
+        rlist, _, _ = select.select([sys.stdin], [], [], timeout)
+        if rlist:
+            sys.stdin.readline()
+            return True
+        return False
+    
+    
 while True:
-    # First check alarm_hist_dummy table for any new entries
+    print("\n=== Debug Information ===")
+    print(f"Current last_processed_hist_time: {last_processed_hist_time}")
+    
     query_hist = """
-        SELECT * FROM alarm_hist_dummy 
+        SELECT * FROM alarm_hist
         WHERE NE_TIME > %s 
         ORDER BY NE_TIME
     """
-    cursor.execute(query_hist, (last_processed_time,))
+    
+    # Debug the actual SQL being executed
+    cursor.execute(query_hist, (last_processed_hist_time,))
+    mydb.commit()
+    print(f"Executed query with parameter: {last_processed_hist_time}")
+    
     fixed_results = cursor.fetchall()
+    print(f"Number of results returned: {len(fixed_results)}")
+    
+    if fixed_results:
+        print("First result:")
+        print(f"- NE_TIME: {fixed_results[0]['NE_TIME']}")
+        print(f"- ID: {fixed_results[0]['ID']}")
+    else:
+        print("No results found")
+    
+    print("=== End Debug ===\n")
+    
+    # Update last_processed_hist_time if there were results
+    if fixed_results:
+        last_processed_hist_time = max(row['NE_TIME'] for row in fixed_results)
+        print(f"Updated last_processed_hist_time: {last_processed_hist_time}")
+        
     print(f"Fixed results: {fixed_results}")
     # Group fixed alarms by NE_TIME and type
     fixed_groups = defaultdict(list)
@@ -382,9 +444,14 @@ while True:
 
     # Then proceed with checking active alarms (existing code)
     query = "SELECT * FROM alarm WHERE NE_TIME > %s ORDER BY NE_TIME"
-    cursor.execute(query, (last_processed_time,))
+    cursor.execute(query, (last_processed_alarm_time,))
+    mydb.commit()
     results = cursor.fetchall()
     
+    # Update last_processed_alarm_time if there were results
+    if results:
+        last_processed_alarm_time = max(row['NE_TIME'] for row in results)
+        print(f"last_processed_alarm_time: {last_processed_alarm_time}")
     # Group link_down alarms by NE_TIME
     all_groups = defaultdict(list)
     for row in results:
@@ -445,7 +512,7 @@ while True:
                 logging.info(f"No new isolated nodes detected after node_not_reachable alarms {alarm_ids_causing_down}.")
           
           link_down_group = [alarm for (atype, alarm) in group if atype == "link_down"]
-
+        
           
           if link_down_group:
             print(f"link_down_group: {link_down_group}")
@@ -457,6 +524,7 @@ while True:
                 ip1, ifIndex1 = alarm1.get("OBJ_NAME"), alarm1.get("interface")
                 ip2, ifIndex2 = alarm2.get("OBJ_NAME"), alarm2.get("interface")
                 id1, id2 = alarm1.get("ID"), alarm2.get("ID")
+                ne_time = alarm1.get("NE_TIME")
                 print(f"ip1: {ip1}, ifIndex1: {ifIndex1}, ip2: {ip2}, ifIndex2: {ifIndex2}")
                 if not (ip1 and ifIndex1 and ip2 and ifIndex2):
                     continue
@@ -467,6 +535,7 @@ while True:
                       OR (aendip = %s AND aendifIndex = %s AND bendip = %s AND bendifIndex = %s)
                 """
                 cursor.execute(query_conn, (ip1, ifIndex1, ip2, ifIndex2, ip2, ifIndex2, ip1, ifIndex1))
+                mydb.commit()
                 result_conn = cursor.fetchall()
                 
                 connection_name, lr_ring, block,district, curr_physicalring, physicalsegments = get_connection_info(result_conn)
@@ -510,7 +579,8 @@ while True:
                     if new_isolated:
                         for node in new_isolated:
                             ip = persistent_physical_graph.nodes[node].get('ip')
-                            dummy_id = insert_dummy_node_not_reachable_alarm(ip)
+                            print(f"Passe ne_time: {ne_time}")
+                            dummy_id = insert_dummy_node_not_reachable_alarm(ip,ne_time)
                             child_alarms.append(dummy_id)
                             print("Inserted alarm")
                         
@@ -524,8 +594,6 @@ while True:
                         
                         root_cause_alarm_ids = f"{id1} and {id2}"
                         logging.info(
-                            "="*80 + "\n"
-                            "NEW LOGICAL CUT DETECTED\n" +
                             "="*80 + "\n"
                             f"Isolated Nodes: {new_isolated}\n"
                             f"Root Cause Alarms: {root_cause_alarm_ids}\n"
@@ -584,8 +652,11 @@ while True:
               print("No logical connections were found in this group.")    
         # Update last_processed_time to the latest NE_TIME from the results
         print(f"Root cause mapping: {root_cause_mapping}")
-        last_processed_time = datetime.now()
     else:
         print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] No new alarms.")
     
-    time.sleep(300)
+    print(f"node_edges_backup: {node_edges_backup}")
+    if not wait_key_or_timeout(300):  # 300 seconds = 5 minutes
+        print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Timeout occurred, processing...")
+    else:
+        print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Key pressed, processing immediately...")

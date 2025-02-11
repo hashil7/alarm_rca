@@ -1,3 +1,4 @@
+from datetime import datetime
 import mysql.connector
 import logging
 import configparser
@@ -67,13 +68,13 @@ def move_alarms_to_history(alarm_ids):
                     alarm_hist = {
                         'ID':              alarm['ID'],
                         'NOTIF_ID':        alarm['NOTIF_ID'],
-                        'NE_TIME':         alarm['NE_TIME'],
+                        'NE_TIME':         datetime.now(),
                         'CLEARED_TIME':    alarm['NE_TIME'],            # dummy: same as NE_TIME
                         'OBJ_NAME':        alarm['OBJ_NAME'],
                         'OBJ_TYPE':        alarm['OBJ_TYPE'],
                         'RES_NAME':        alarm['RES_NAME'],
                         'EMS_TIME':        alarm['EMS_TIME'],
-                        'CLEARED_EMS_TIME':alarm['EMS_TIME'],           # dummy: same as EMS_TIME
+                        'CLEARED_EMS_TIME': datetime.now(),           # dummy: same as EMS_TIME
                         'CURR_LOG_TIME':   alarm['LOG_TIME'],           # dummy: from alarm's LOG_TIME
                         'HIST_LOG_TIME':   alarm['LOG_TIME'],           # dummy: same as LOG_TIME
                         'PROB_CAUSE':      alarm['PROB_CAUSE'],
@@ -132,7 +133,7 @@ def move_alarms_to_history(alarm_ids):
             print("MySQL connection is closed.")
 
 if __name__ == "__main__":
-    alarm_ids = ['LIN_20250210154501_46fac009b4cd','LIN_20250210154501_ad0dd6b2acb3','DUMMY_477e8af9-965a-4e7a-98bc-89f4538aead4','DUMMY_aa008cfb-fd96-4199-a793-2f4b15eff3cb']  # Example list of alarm IDs
+    alarm_ids = ['LIN_20250211141419_818d3f5c8afd','LIN_20250211141419_86f1a673b831','DUMMY_71cae578-dd35-40c2-9dbe-9cac9681b8ea',]  # Example list of alarm IDs
     move_alarms_to_history(alarm_ids)
 
 
