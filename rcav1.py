@@ -3,8 +3,12 @@ import configparser
 import mysql.connector
 import logging
 import time
+import pickle
+from pgmpy.inference import VariableElimination
+from datetime import datetime
 
-
+for handler in logging.root.handlers[:]:
+    logging.root.removeHandler(handler)
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(levelname)s:\n%(message)s\n',
@@ -56,9 +60,9 @@ if 'topology_logical' not in globals():
         bend = row["bendip"]
         aendname = row["aendname"].upper()
         bendname = row["bendname"].upper()
-        pr_name = row["physicalringname"]
-        lr_name = row["lrname"]
-        block_name = row["block_name"]
+        pr_name = row["physicalringname"].upper()
+        lr_name = row["lrname"].upper()
+        block_name = row["block_name"].upper()
         topology_logical_graph.add_node(aend, name=aendname,lr_name=lr_name,pr_name = pr_name,block_name=block_name)
         topology_logical_graph.add_node(bend, name=bendname,lr_name=lr_name,pr_name = pr_name,block_name=block_name)
         topology_logical_graph.add_edge(aend, bend,lr_name=lr_name,pr_name = pr_name,block_name=block_name)
@@ -66,6 +70,52 @@ if 'topology_logical' not in globals():
     # for edge in topology_logical_graph.edges(data=True):
     #     node1,node2,attributes = edge
     #     logging.info(f"Node: {node1} is connected to {node2} | Physical Ring: {attributes.get('pr_name', 'N/A')} | LR Ring: {attributes.get('lr_name', 'N/A')}")
+block_router_query = """
+    SELECT ip 
+    FROM network_element 
+    WHERE devicetype = 'BLOCK_ROUTER'
+"""
+cursor.execute(block_router_query)
+block_routers = cursor.fetchall()
+mydb.commit()
+
+# # Create a set of block router IPs for faster lookups
+block_router_ips = {router['ip'] for router in block_routers}
+logging.info(f"Found {len(block_router_ips)} BLOCK_ROUTERs")
+
+# First mark each block router
+for ip in block_router_ips:
+    if not topology_logical_graph.has_node(ip):
+        logging.warning(f"BLOCK_ROUTER {ip} not found in topology graph")
+    else:
+        # Mark as block router
+        topology_logical_graph.nodes[ip]['is_block'] = True
+        
+        # Also set its own block_ip to itself
+        topology_logical_graph.nodes[ip]['block_ip'] = ip
+        
+        # Find all nodes reachable from this block router using BFS
+        try:
+            # Get all reachable nodes (bfs_tree excludes the source node by default)
+            reachable_nodes = list(nx.bfs_tree(topology_logical_graph, ip))
+            
+            # Include the source node itself
+            reachable_nodes.append(ip)
+            
+            # Set block_ip for all reachable nodes
+            assigned_count = 0
+            for node in reachable_nodes:
+                    
+                # Assign this node to the current block router
+                topology_logical_graph.nodes[node]['block_ip'] = ip
+                assigned_count += 1
+            
+            # Log the assignment
+            block_name = topology_logical_graph.nodes[ip].get('block_name', 'Unknown')
+            logging.info(f"Block router {ip} ({block_name}): {assigned_count} nodes assigned")
+            
+        except Exception as e:
+            logging.error(f"Error assigning nodes to block router {ip}: {e}")
 
 # Add UPS devices as spur nodes
 logging.info("Adding UPS devices as nodes...")
@@ -110,7 +160,7 @@ for edge in topology_logical_graph.edges(data=True):
         node1,node2,attributes = edge
         logging.info(f"Node: {node1} is connected to {node2} | {attributes}")
 
-def process_link_down(graph, ip, ne_time):
+def process_link_down(graph, id, ip, ne_time):
     """
     Process a link_down alarm for a node by removing the edge to the neighbor
     with the smallest time difference between link_down events.
@@ -166,11 +216,146 @@ def process_link_down(graph, ip, ne_time):
         
         # Remove the edge to the closest neighbor
         if graph.has_edge(ip, closest_neighbor):
+            previous_graph = graph.copy()
             graph.remove_edge(ip, closest_neighbor)
             logging.info(f"Edge removed between {ip} and {closest_neighbor} - Time diff: {time_diff}s")
+            isolated_nodes = get_isolated_nodes(graph,previous_graph,ip)
+            logging.info(f"Isolated nodes: {isolated_nodes}")
+
+            for node in isolated_nodes:
+                graph.nodes[node]['has_link_down'] = id
+                logging.info(f"Node {node} marked with has_link_down: {id}")
             return (ip, closest_neighbor)
     
     return None
+def process_node_down(graph, ip,id, ne_time):
+    previous_graph = graph.copy()
+    graph.remove_node(ip)
+    logging.info(f"Node {ip} removed from the graph")
+    isolated_nodes = get_isolated_nodes(graph,previous_graph,ip)
+    logging.info(f"Isolated nodes: {isolated_nodes}")
+    block_failed = graph.nodes[ip].get('is_block', False)
+    for node in isolated_nodes:
+        graph.nodes[node]['has_node_down'] = id
+        graph.nodes[node]['block_failed'] = block_failed
+        logging.info(f"Node {node} marked with has_node_down: {id}")
+
+    return None
+def predict_root_cause(model,attrs):
+    inference = VariableElimination(model)
+    has_ups_low_battery = attrs.get('has_ups_low_battery', False)
+    has_link_down = attrs.get('has_link_down', False)
+    block_failed = attrs.get('block_failed', False)
+    evidence = {
+        'has_ups_low_battery': has_ups_low_battery,
+        'has_link_down': has_link_down,
+        'block_failed': block_failed
+    }
+    logging.info(f"Evidence for RCA: {evidence}")
+    try:
+        # Query the model
+        result = inference.query(variables=['rca'], evidence=evidence)
+        
+        # Get probability distribution
+        prob_dist = {state: float(prob) for state, prob in 
+                    zip(result.state_names['rca'], result.values)}
+        
+        # Sort probabilities from highest to lowest
+        sorted_probs = sorted(prob_dist.items(), key=lambda x: x[1], reverse=True)
+        
+        # Format nicely for logging
+        log_message = ["RCA Probability Distribution:"]
+        log_message.append("-" * 50)
+        log_message.append(f"{'Root Cause':<20} | {'Probability':<15} | {'Rank'}")
+        log_message.append("-" * 50)
+        
+        for i, (cause, prob) in enumerate(sorted_probs):
+            log_message.append(f"{cause:<20} | {prob:.6f} | {i+1}")
+        
+        log_message.append("-" * 50)
+        
+        # Log the formatted probability distribution
+        logging.info("\n".join(log_message))
+        
+        # Find most probable RCA (first item in sorted list)
+        most_probable_rca = sorted_probs[0][0]
+        
+        # Log the final prediction
+        logging.info(f"Selected RCA: {most_probable_rca} with probability {sorted_probs[0][1]:.6f}")
+        rca_id = attrs.get(most_probable_rca,None)
+        logging.info(f"RCA ID from node: {rca_id}")
+        return rca_id
+        
+    except Exception as e:
+        logging.error(f"Error in RCA prediction: {e}")
+        return None
+
+def process_ups_low_battery(graph, ip, ne_time,id):
+    if not graph.has_node(ip):
+        logging.warning(f"UPS low battery alarm for non-existent node {ip}")
+        return None
+    graph.nodes[ip]['ups_low_battery_alarm_received'] = True
+    graph.nodes[ip]['ups_low_battery_ne_time'] = ne_time
+    logging.info(f"Node {ip} marked with UPS low battery alarm at time {ne_time}")
+    try:
+        router = next(graph.neighbors(ip))
+    except StopIteration:
+        logging.warning(f"UPS {ip} has no connected router")
+        return None
+    graph.nodes[router]['has_ups_low_battery'] = id
+    logging.info(f"Router {router} marked with UPS low battery alarm")
+
+def get_isolated_nodes(graph, previous_graph, ip):
+    """
+    Analyze impact of failures by comparing node reachability
+    
+    Parameters:
+    -----------
+    graph : NetworkX Graph
+        Current network graph
+    previous_graph : NetworkX Graph or str, optional
+        Previous graph state or node IP
+    ip : str, optional
+        IP address of node to analyze
+        
+    Returns:
+    --------
+    set
+        Set of nodes that became unreachable
+    """
+    # Handle case where previous_graph is the IP (backward compatibility)
+
+    # Basic validation
+    if ip is None or not graph.has_node(ip):
+        logging.warning(f"Node {ip} not found in graph while analyzing impact")
+        return set()
+    
+    logging.info(f"Analyzing impact of failure at {ip}")
+    block_ip = graph.nodes[ip].get('block_ip')
+    if not block_ip:
+        logging.warning(f"Node {ip} has no assigned block_ip, cannot analyze impact")
+        return set()
+    logging.info(f"Block IP for {ip}: {block_ip}")
+    # Create operational graph (without failed edges)
+   
+    # Add only non-failed edges
+
+    
+    # Find currently reachable nodes through operational edges
+    current_reachable = set(nx.bfs_tree(graph, block_ip))
+    logging.info(f"Current reachable nodes from {block_ip}: {current_reachable}")
+    # If we don't have previous graph, we can only report current state
+    if previous_graph is None:
+        logging.info("Previous graph not available in get_isolated_nodes function")
+        return None
+    
+    # Find previously reachable nodes
+    previous_reachable = set(nx.bfs_tree(previous_graph, block_ip))
+    logging.info(f"Previous reachable nodes from {block_ip}: {previous_reachable}")
+    # Return nodes that were reachable before but not now
+    return previous_reachable - current_reachable
+    
+           
 def main():
     while True:
         try:
@@ -178,17 +363,31 @@ def main():
             cursor.execute(truncate_query)
             mydb.commit()
             current_graph = topology_logical_graph.copy()
-            query = "SELECT * FROM alarm ORDER BY NE_TIME"
+            query = """SELECT * FROM berla_alarms where prob_cause = "link_down" ORDER BY NE_TIME"""
             cursor.execute(query)
             mydb.commit()
             alarms = cursor.fetchall()
             for alarm in alarms:
+                id = alarm["ID"]
                 prob_cause = alarm["PROB_CAUSE"]
                 ip = alarm["OBJ_NAME"]
                 ne_time = alarm["NE_TIME"]
-                
+                with open('bayesian_rca_model.pkl', 'rb') as f:
+                    model = pickle.load(f)
+                root_cause = predict_root_cause(model,current_graph.nodes[ip])
+                if root_cause is None:
+                    root_cause = id
+                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                insert_query = "INSERT INTO dummy_cam (rca_id, child_id, timestamp) VALUES (%s, %s, %s)"
+                cursor.execute(insert_query, (root_cause, id, timestamp))
+                mydb.commit()               
                 if prob_cause == "link_down":
-                    process_link_down(current_graph, ip, ne_time)
+                    process_link_down(current_graph,id, ip, ne_time)
+                elif prob_cause == "node_not_reachable":
+                    process_node_down(current_graph, ip,id, ne_time)
+                elif prob_cause == "ups_low_battery":
+                    process_ups_low_battery(current_graph, ip, ne_time,id)
+               
             time.sleep(300)            
         except Exception as e:
             logging.error(f"Unhandled exception in main loop: {e}")
