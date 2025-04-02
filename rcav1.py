@@ -302,6 +302,7 @@ def process_node_down(graph, ip,id, ne_time):
     block_failed = graph.nodes[ip].get('is_block', False)
     graph.remove_node(ip)
     logging.info(f"Node {ip} removed from the graph")
+    
     isolated_nodes = get_isolated_nodes(graph,previous_graph,ip)
     logging.info(f"Isolated nodes: {isolated_nodes}")
     
@@ -369,6 +370,7 @@ def process_ups_low_battery(graph, ip, ne_time,id):
     logging.info(f"Node {ip} marked with UPS low battery alarm at time {ne_time}")
     try:
         router = next(graph.neighbors(ip))
+        
     except StopIteration:
         logging.warning(f"UPS {ip} has no connected router")
         return None
@@ -423,7 +425,7 @@ def get_isolated_nodes(graph, previous_graph, ip):
     previous_reachable = set(nx.bfs_tree(previous_graph, block_ip))
     logging.info(f"Previous reachable nodes from {block_ip}: {previous_reachable}")
     # Return nodes that were reachable before but not now
-    return previous_reachable - current_reachable
+    return (previous_reachable or set()) - (current_reachable or set())
     
            
 def main():
@@ -442,6 +444,9 @@ def main():
                 prob_cause = alarm["PROB_CAUSE"]
                 ip = alarm["OBJ_NAME"]
                 ne_time = alarm["NE_TIME"]
+                if ip not in current_graph.nodes:
+                    logging.warning(f"Node {ip} not found in topology graph")
+                    continue
                 with open('bayesian_rca_model.pkl', 'rb') as f:
                     model = pickle.load(f)
                 root_cause = predict_root_cause(model,current_graph.nodes[ip])
