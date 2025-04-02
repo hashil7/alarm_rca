@@ -83,6 +83,75 @@ mydb.commit()
 block_router_ips = {router['ip'] for router in block_routers}
 logging.info(f"Found {len(block_router_ips)} BLOCK_ROUTERs")
 
+# Remove all nodes that create paths between blocks
+logging.info("Removing nodes that connect different blocks...")
+
+# Create a working copy of the graph for path analysis
+connection_graph = topology_logical_graph.copy()
+
+# Track nodes to remove
+nodes_to_remove = set()
+
+# Keep track of how many nodes were found in each iteration
+prev_removal_count = -1
+current_removal_count = 0
+
+# Generate all pairs of block routers
+block_router_list = list(block_router_ips)
+logging.info(f"Finding paths between {len(block_router_list)} block routers")
+
+# Iteratively remove nodes until no new paths are found
+while prev_removal_count != current_removal_count:
+    prev_removal_count = current_removal_count
+    
+    # Create a temporary graph with current removals
+    temp_graph = connection_graph.copy()
+    temp_graph.remove_nodes_from(nodes_to_remove)
+    
+    # Check all pairs of block routers
+    for i in range(len(block_router_list)):
+        for j in range(i+1, len(block_router_list)):
+            block1 = block_router_list[i]
+            block2 = block_router_list[j]
+            
+            # Skip if either block router was somehow removed
+            if (block1 not in temp_graph.nodes or 
+                block2 not in temp_graph.nodes):
+                continue
+                
+            # Find a path if one exists in the current graph
+            try:
+                if nx.has_path(temp_graph, block1, block2):
+                    path = nx.shortest_path(temp_graph, block1, block2)
+                    
+                    # Add all intermediate nodes to removal list
+                    for node in path[1:-1]:  # Exclude the block routers themselves
+                        if node not in block_router_ips and node not in nodes_to_remove:
+                            nodes_to_remove.add(node)
+                            logging.info(f"Marking node {node} for removal (connects blocks {block1} and {block2})")
+            except nx.NetworkXNoPath:
+                continue
+    
+    # Update count for next iteration
+    current_removal_count = len(nodes_to_remove)
+    logging.info(f"Iteration complete: {current_removal_count} nodes marked for removal")
+
+# Now remove these nodes from the actual topology graph
+for node in nodes_to_remove:
+    if topology_logical_graph.has_node(node):
+        topology_logical_graph.remove_node(node)
+        logging.info(f"Removed connecting node {node} from topology graph")
+
+logging.info(f"Removed {len(nodes_to_remove)} nodes to completely isolate blocks")
+
+# Verify isolation - blocks should form separate connected components
+components = list(nx.connected_components(topology_logical_graph))
+logging.info(f"Topology now has {len(components)} disconnected components")
+
+# Count block routers in each component
+for i, component in enumerate(components):
+    block_routers_in_component = [node for node in component if node in block_router_ips]
+    logging.info(f"Component {i+1} contains {len(block_routers_in_component)} block router(s): {block_routers_in_component}")
 # First mark each block router
 for ip in block_router_ips:
     if not topology_logical_graph.has_node(ip):
@@ -230,11 +299,12 @@ def process_link_down(graph, id, ip, ne_time):
     return None
 def process_node_down(graph, ip,id, ne_time):
     previous_graph = graph.copy()
+    block_failed = graph.nodes[ip].get('is_block', False)
     graph.remove_node(ip)
     logging.info(f"Node {ip} removed from the graph")
     isolated_nodes = get_isolated_nodes(graph,previous_graph,ip)
     logging.info(f"Isolated nodes: {isolated_nodes}")
-    block_failed = graph.nodes[ip].get('is_block', False)
+    
     for node in isolated_nodes:
         graph.nodes[node]['has_node_down'] = id
         graph.nodes[node]['block_failed'] = block_failed
@@ -363,7 +433,7 @@ def main():
             cursor.execute(truncate_query)
             mydb.commit()
             current_graph = topology_logical_graph.copy()
-            query = """SELECT * FROM berla_alarms where prob_cause = "link_down" ORDER BY NE_TIME"""
+            query = """SELECT * FROM alarm ORDER BY NE_TIME"""
             cursor.execute(query)
             mydb.commit()
             alarms = cursor.fetchall()
