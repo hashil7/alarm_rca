@@ -311,8 +311,9 @@ def process_node_down(graph, ip, id, ne_time):
     logging.info(f"Isolated nodes: {isolated_nodes}")
     
     for node in isolated_nodes:
-        graph.nodes[node]['has_node_down'] = id
-        graph.nodes[node]['block_failed'] = block_failed
+        graph.nodes[node]['has_link_down'] = id
+        if block_failed:
+            graph.nodes[node]['block_failed'] = id
         logging.info(f"Node {node} marked with has_node_down: {id}")
         logging.info(f"Node {node} marked with block_failed: {block_failed}")
 
@@ -350,7 +351,10 @@ def get_isolated_nodes(graph, previous_graph, ip, prob_cause="link_down"):
         return set()
         
     logging.info(f"Block IP for {ip}: {block_ip}")
-    
+    if block_ip not in previous_graph.nodes:
+        logging.warning(f"Block IP {block_ip} not found in graph while analyzing impact")
+        return set()
+        
     if previous_graph is None:
         logging.info("Previous graph not available in get_isolated_nodes function")
         return set()
@@ -445,7 +449,10 @@ def process_start_event(current_graph, alarm, removed_links, removed_nodes, ups_
     if ip not in topology_logical_graph.nodes and prob_cause != 'ups_low_battery':
         logging.warning(f"Node {ip} not found in topology graph, skipping")
         return
-    
+    rca = None
+    if prob_cause != 'link_down':
+        rca=find_rca(current_graph,ip, alarm_id, model, cursor, mydb)
+
     # Process based on alarm type
     if prob_cause == 'link_down':
         failed_link = process_link_down(current_graph, alarm_id, ip, event_time,rfo)
@@ -464,7 +471,7 @@ def process_start_event(current_graph, alarm, removed_links, removed_nodes, ups_
         ups_alarms[alarm_id] = ip
     
     # After each alarm, look for isolated nodes that need RCA
-    check_for_isolated_nodes(current_graph, event_time, model, cursor, mydb)
+    
 
 # Process clear events for different alarm types
 def process_clear_event(current_graph, alarm, removed_links, removed_nodes, ups_alarms, topology_graph):
@@ -534,36 +541,28 @@ def process_clear_event(current_graph, alarm, removed_links, removed_nodes, ups_
         # Remove from tracking dict
         del ups_alarms[alarm_id]
 
-def check_for_isolated_nodes(current_graph, event_time, model, cursor, mydb):
-    """Check for isolated nodes that need RCA"""
-    isolated_nodes = set()
+def find_rca(current_graph, ip, alarm_id, model, cursor, mydb):
+    """Check if the current node needs RCA for the specific alarm"""
+    if not current_graph.has_node(ip):
+        logging.warning(f"Cannot check RCA for non-existent node {ip}")
+        return
+
+    root_cause_id = predict_root_cause(model, current_graph.nodes[ip])
     
-    for node in current_graph.nodes:
-        # Check if node has any of the alarm indicators
-        has_link_down = current_graph.nodes[node].get('has_link_down')
-        has_node_down = current_graph.nodes[node].get('has_node_down')
-        has_ups_low = current_graph.nodes[node].get('has_ups_low_battery')
+    if root_cause_id:
+        current_graph.nodes[ip]['rca_done'] = True
+        current_graph.nodes[ip]['root_cause_id'] = root_cause_id
         
-        if has_link_down or has_node_down or has_ups_low:
-            isolated_nodes.add(node)
-    
-    # Perform RCA for isolated nodes
-    for node_ip in isolated_nodes:
-        if current_graph.has_node(node_ip):
-            # Only do RCA if we haven't already identified root cause
-            if not current_graph.nodes[node_ip].get('rca_done'):
-                root_cause_id = predict_root_cause(model, current_graph.nodes[node_ip])
-                if root_cause_id:
-                    current_graph.nodes[node_ip]['rca_done'] = True
-                    current_graph.nodes[node_ip]['root_cause_id'] = root_cause_id
-                    
-                    # Store RCA result in database
-                    insert_query = """
-                        INSERT INTO dummy_cam (rca_id, child_id, timestamp) 
-                        VALUES (%s, %s, %s)
-                    """
-                    cursor.execute(insert_query, (root_cause_id, node_ip, str(event_time)))
-                    mydb.commit()
+        # Store RCA result in database
+        insert_query = """
+            INSERT INTO dummy_cam (rca_id, child_id, timestamp) 
+            VALUES (%s, %s, %s)
+        """
+        cursor.execute(insert_query, (root_cause_id, alarm_id, datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+        mydb.commit()
+        logging.info(f"RCA recorded: Node {ip} with root cause {root_cause_id}")
+        return root_cause_id
+    return None
 
 def main():
     """Main function that orchestrates the RCA process"""
@@ -601,7 +600,7 @@ def main():
             model = pickle.load(f)
         
         # Fetch alarms from database
-        query = """SELECT * FROM alarm_hist where ne_time > '2024-10-28 10:59:58'"""
+        query = """SELECT * FROM alarm_hist where ne_time > '2024-9-28 10:59:58'"""
         cursor.execute(query)
         alarms = cursor.fetchall()
         mydb.commit()
