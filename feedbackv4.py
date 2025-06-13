@@ -504,6 +504,13 @@ class RingVisualizerApp(QMainWindow):
         self.train_button.setEnabled(False)
         bottom_layout.addWidget(self.train_button)
 
+        # Add after the train button
+        self.save_model_button = QPushButton("Save")
+        self.save_model_button.setMaximumHeight(25)
+        self.save_model_button.clicked.connect(self.save_trained_model)
+        self.save_model_button.setEnabled(False)  # Disable until model is trained
+        bottom_layout.addWidget(self.save_model_button)
+
         # Create status bar - ADD THIS
         
 
@@ -891,6 +898,10 @@ class RingVisualizerApp(QMainWindow):
 
         # Update edge selection comboboxes
         self.update_edge_selection_combos()
+
+        # Store for model metadata
+        self.current_pr_name = pr_name
+        self.current_lr_number = lr_number
 
     def on_table_selection_changed(self, selected, deselected):
         """Handle selection of a node in the table"""
@@ -1695,7 +1706,7 @@ class RingVisualizerApp(QMainWindow):
                 num_node_features=5,
                 num_edge_features=2,
                 hidden_channels=32,
-                num_layers=18
+                num_layers=6
             )
             
             # Save state dict with proper extension
@@ -1716,29 +1727,39 @@ class RingVisualizerApp(QMainWindow):
             return None
 
     def load_gnn_model(self, model_path):
-        """Load a pre-trained GNN model from a file"""
+        """Load GNN model with backward compatibility"""
         try:
-            # Create new model with CORRECT architecture (6 layers)
+            if not os.path.exists(model_path):
+                QMessageBox.warning(self, "Model Load Error", f"Model file not found: {model_path}")
+                return None
+            
+            # Create model with correct architecture
             model = IsolationGNN(
                 num_node_features=5,
                 num_edge_features=2,
                 hidden_channels=32,
-                num_layers=6  # Match existing models
+                num_layers=6
             )
             
-            # Load with map_location to ensure CPU compatibility
-            state_dict = torch.load(model_path, map_location='cpu', weights_only=True)
-            model.load_state_dict(state_dict)
-        
-            # Set to evaluation mode
-            model.eval()
+            # Load the saved data
+            checkpoint = torch.load(model_path, map_location='cpu', weights_only=True)
             
-            self.statusBar().showMessage(f"Model loaded successfully from {model_path}")
+            # Handle both checkpoint format and direct state dict
+            if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint:
+                # New checkpoint format (from older versions of feedbackv4.py)
+                model.load_state_dict(checkpoint['model_state_dict'])
+                self.statusBar().showMessage(f"Loaded checkpoint model: {os.path.basename(model_path)}")
+            else:
+                # Direct state dict format (compatible with rcav8.py)
+                model.load_state_dict(checkpoint)
+                self.statusBar().showMessage(f"Loaded state dict model: {os.path.basename(model_path)}")
+            
+            model.eval()
             return model
-        
+            
         except Exception as e:
-            QMessageBox.critical(self, "Model Loading Error", 
-                           f"Could not load model: {str(e)}")
+            QMessageBox.critical(self, "Model Load Error", 
+                        f"Could not load model from {model_path}: {str(e)}")
             return None
 
     def save_model(self):
@@ -1836,6 +1857,20 @@ class RingVisualizerApp(QMainWindow):
         # Train the model
         self.trained_model = self.train_model(self.trained_model, data)
         
+        # 🔧 ADD AUTO-SAVE AFTER TRAINING
+        if self.trained_model:
+            # Ask user if they want to save
+            reply = QMessageBox.question(
+                self, 
+                "Save Trained Model", 
+                "Training completed successfully!\n\nDo you want to save the trained model?",
+                QMessageBox.Yes | QMessageBox.No, 
+                QMessageBox.Yes
+            )
+            
+            if reply == QMessageBox.Yes:
+                self.save_trained_model()
+
     def train_model(self, model, data, num_epochs=50, learning_rate=0.001):
         """Train the model on the provided data"""
         try:
@@ -1873,11 +1908,16 @@ class RingVisualizerApp(QMainWindow):
             # Set model back to evaluation mode
             model.eval()
             
+            # Enable save button
+            if hasattr(self, 'save_model_button'):
+                self.save_model_button.setEnabled(True)
+            
             # Show completion message
             QMessageBox.information(
                 self, 
                 "Training Complete", 
-                f"Model trained for {num_epochs} epochs\nFinal loss: {loss.item():.4f}"
+                f"Model trained for {num_epochs} epochs\nFinal loss: {loss.item():.4f}\n\n"
+                f"Click 'Save' to save the trained model."
             )
             
             return model
@@ -2454,25 +2494,98 @@ class RingVisualizerApp(QMainWindow):
                 checkpoint = torch.load(model_path, map_location='cpu', weights_only=True)
                 
                 if isinstance(checkpoint, dict):
-                    if 'num_node_features' in checkpoint:
-                        # It's a full checkpoint
+                    if 'model_state_dict' in checkpoint:
+                        # Old checkpoint format
                         info = f"Size: {file_size_mb:.1f} MB\n"
+                        info += f"Format: Checkpoint (old format)\n"
                         info += f"Node features: {checkpoint.get('num_node_features', 'Unknown')}\n"
                         info += f"Edge features: {checkpoint.get('num_edge_features', 'Unknown')}\n"
                         info += f"Hidden channels: {checkpoint.get('hidden_channels', 'Unknown')}\n"
                         info += f"Layers: {checkpoint.get('num_layers', 'Unknown')}"
                         return info
                     else:
-                        # It's just a state dict
-                        return f"Size: {file_size_mb:.1f} MB\nState dict only"
+                        # New state dict format (compatible with rcav8.py)
+                        info = f"Size: {file_size_mb:.1f} MB\n"
+                        info += f"Format: State dict (rcav8.py compatible)\n"
+                        info += f"Parameters: {len(checkpoint)} tensors"
+                        return info
                 else:
-                    return f"Size: {file_size_mb:.1f} MB\nFull model"
+                    return f"Size: {file_size_mb:.1f} MB\nFormat: Full model object"
                     
             except Exception as e:
-                return f"Size: {file_size_mb:.1f} MB\nCould not read model details"
+                return f"Size: {file_size_mb:.1f} MB\nCould not read model details: {str(e)}"
                 
         except Exception as e:
             return f"Error reading file: {str(e)}"
+
+    def save_trained_model(self):
+        """Save the trained model in the format expected by rcav8.py"""
+        if not hasattr(self, 'trained_model') or not self.trained_model:
+            QMessageBox.warning(self, "Save Error", "No trained model available to save")
+            return
+        
+        try:
+            # Get original model path or create new one
+            if hasattr(self, 'original_model_path') and self.original_model_path:
+                base_path = self.original_model_path
+            else:
+                base_path = self.model_path_entry.text()
+            
+            # Create timestamped filename for backup
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            base_name = os.path.splitext(base_path)[0]
+            backup_path = f"{base_name}_backup_{timestamp}.pt"
+            
+            # Ask user for save options
+            reply = QMessageBox.question(
+                self, 
+                "Save Options", 
+                f"Choose save option:\n\n"
+                f"Yes = Overwrite original ({os.path.basename(base_path)})\n"
+                f"No = Save as backup ({os.path.basename(backup_path)})\n"
+                f"Cancel = Don't save",
+                QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
+                QMessageBox.No  # Default to backup
+            )
+            
+            if reply == QMessageBox.Cancel:
+                return
+            elif reply == QMessageBox.Yes:
+                save_path = base_path
+                save_type = "original"
+            else:  # No = backup
+                save_path = backup_path
+                save_type = "backup"
+            
+            # Ensure proper file extension
+            if not save_path.endswith('.pt'):
+                save_path = save_path + '.pt'
+            
+            # 🔧 CHANGED: Save only state dict (not full checkpoint) to match rcav8.py expectations
+            torch.save(self.trained_model.state_dict(), save_path)
+            
+            # Update the model path entry if we saved as original
+            if reply == QMessageBox.Yes:
+                self.model_path_entry.setText(save_path)
+                self.original_model_path = save_path
+            
+            # Show success message
+            self.statusBar().showMessage(f"Model saved as {save_type}: {os.path.basename(save_path)}")
+            QMessageBox.information(
+                self, 
+                "Model Saved Successfully", 
+                f"Model saved as {save_type}:\n{save_path}\n\n"
+                f"File size: {os.path.getsize(save_path) / (1024*1024):.1f} MB\n"
+                f"Format: State dict (compatible with rcav8.py)"
+            )
+            
+            # Refresh model combo if saved to models directory
+            if save_path.startswith('models/'):
+                self.populate_model_combo()
+                
+        except Exception as e:
+            QMessageBox.critical(self, "Save Error", f"Could not save model: {str(e)}")
+            logging.error(f"Model save error: {str(e)}")
 
 def main():
     """Main application entry point"""
